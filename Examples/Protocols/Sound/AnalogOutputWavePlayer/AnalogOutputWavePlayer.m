@@ -4,6 +4,8 @@ A stimulus sandbox which cycles through candidate waveforms.
 Serves as a simple example of using the BpodWavePlayer to produce sounds.
 
 See also: https://sites.google.com/site/bpoddocumentation/user-guide/function-reference/bpodwaveplayer
+
+Author: gregory@bccn-berlin.de
 %}
 
 global BpodSystem
