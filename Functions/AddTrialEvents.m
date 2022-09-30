@@ -52,7 +52,7 @@ else
     [~,TE.Info.Rig] = system('hostname');
     [~,TE.Info.Subject] = fileparts(fileparts(fileparts(fileparts(BpodSystem.Path.CurrentDataFile))));
     TE.Info.SessionDescription = '';
-    TE.Custom.General = TE.Info
+    TE.Custom.General = TE.Info;
 end
 TE.nTrials = TrialNum;
 %% Parse and add raw events for this trial
