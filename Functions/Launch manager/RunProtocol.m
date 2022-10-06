@@ -143,6 +143,8 @@ switch Opstring
         catch
         end
         %------
+        SaveSessionDataToFileServer();
+        
         if ~isempty(BpodSystem.Status.CurrentProtocolName)
             disp(' ')
             disp([BpodSystem.Status.CurrentProtocolName ' ended'])
