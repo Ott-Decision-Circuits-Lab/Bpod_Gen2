@@ -52,6 +52,8 @@ else
     [~,TE.Info.Rig] = system('hostname');
     [~,TE.Info.Subject] = fileparts(fileparts(fileparts(fileparts(BpodSystem.Path.CurrentDataFile))));
     TE.Info.SessionDescription = '';
+    TE.Info.Lab = 'AG Torben Ott at Humboldt University Berlin';
+    TE.Info.Experimenter = getenv('USERNAME');
     TE.Custom.General = TE.Info;
 end
 TE.nTrials = TrialNum;
