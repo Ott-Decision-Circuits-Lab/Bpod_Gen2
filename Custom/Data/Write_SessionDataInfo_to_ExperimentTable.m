@@ -24,33 +24,33 @@ if Info.Subject == "FakeSubject"  % For testing
 end
 
 [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
-exp_info(1).experiment_id = string(strcat(name, ext));
+exp_info.experiment_id = string(strcat(name, ext));
 
 session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
-exp_info(1).session_start_time = datestr(session_start);
+exp_info.session_start_time = datestr(session_start);
 
-exp_info(1).rat_id = Info.Subject;
-exp_info(1).experimenter = string(Info.Experimenter);
-exp_info(1).session_description = strjoin(Info.SessionDescription, '; ');
-exp_info(1).rig_computer_id = string(strtrim(Info.Rig));
-exp_info(1).bpod_version = string(Info.StateMachineVersion);
-exp_info(1).bpod_branch_name = string(Info.BpodBranchName);
-exp_info(1).bpod_branch_hash = string(Info.BpodBranchHash);
-exp_info(1).bpod_branch_url = string(Info.BpodBranchURL);
-exp_info(1).protocol_branch_name = string(Info.SessionProtocolBranchName);
-exp_info(1).protocol_branch_hash = string(Info.SessionProtocolBranchHash);
-exp_info(1).protocol_branch_url = string(Info.SessionProtocolBranchURL);
+exp_info.rat_id = Info.Subject;
+exp_info.experimenter = string(Info.Experimenter);
+exp_info.session_description = strjoin(Info.SessionDescription, '; ');
+exp_info.rig_computer_id = string(strtrim(Info.Rig));
+exp_info.bpod_version = string(Info.StateMachineVersion);
+exp_info.bpod_branch_name = string(Info.BpodBranchName);
+exp_info.bpod_branch_hash = string(Info.BpodBranchHash);
+exp_info.bpod_branch_url = string(Info.BpodBranchURL);
+exp_info.protocol_branch_name = string(Info.SessionProtocolBranchName);
+exp_info.protocol_branch_hash = string(Info.SessionProtocolBranchHash);
+exp_info.protocol_branch_url = string(Info.SessionProtocolBranchURL);
 
 first_trial_start = BpodSystem.Data.TrialStartTimestamp(1);
 last_trial_end = BpodSystem.Data.TrialEndTimestamp(end);
 session_len = last_trial_end - first_trial_start;
-exp_info(1).session_length = string(session_len / 1000);
-exp_info(1).raw_data_file_path = "O:\data\";
+exp_info.session_length = string(session_len / 1000);
+exp_info.raw_data_file_path = "O:\data\";
 
 trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));
-exp_info(1).preprocessed_trial_data_file_path = trial_path;
+exp_info.preprocessed_trial_data_file_path = trial_path;
 metadata_path = string(strcat(name, "_session_metadata.tsv"));
-exp_info(1).metadata_file_path = metadata_path;
+exp_info.metadata_file_path = metadata_path;
 
 
 exp_info_table = struct2table(exp_info);
