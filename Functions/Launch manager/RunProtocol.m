@@ -145,7 +145,7 @@ switch Opstring
         %------
         SaveSessionDataToFileServer();
         Write_SessionDataInfo_to_ExperimentTable();
-
+        Write_to_Husbandry_Log();
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)
             disp(' ')
