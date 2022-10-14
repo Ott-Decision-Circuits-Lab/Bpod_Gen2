@@ -136,16 +136,33 @@ switch Opstring
             end
         end
     case 'Stop'
-        %----- execute user kill script. TO 2022.
+        %-------------Protocol-specific scripts----------------------%
+        % These require try blocks, because they may not be implemented
+        % in a given protocol
+        protocol = BpodSystem.GUIData.ProtocolName;
+        prot_path = BpodSystem.Path.ProtocolFolder;
+
         try
-            Protocol=BpodSystem.Status.CurrentProtocolName;
-            run(fullfile(BpodSystem.Path.ProtocolFolder,Protocol,'UserKillScript.m'));
+            run(fullfile(prot_path, protocol, 'save_custom_data_csv.m'));
         catch
         end
-        %------
+
+        try
+            run(fullfile(prot_path, protocol, 'save_GUI_params_csv.m'));
+        catch
+        end
+
+        try      
+            run(fullfile(prot_path, protocol, 'UserKillScript.m'));
+        catch
+        end
+        %-----------Common scripts across protocols------------------%
+        % These do not require try blocks, because they are implemented
+        % on the Bpod level
         SaveSessionDataToFileServer();
         Write_SessionDataInfo_to_ExperimentTable();
         Write_to_Husbandry_Log();
+        %------------------------------------------------------------%
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)
             disp(' ')
