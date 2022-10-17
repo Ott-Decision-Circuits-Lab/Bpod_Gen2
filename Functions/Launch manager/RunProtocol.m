@@ -190,11 +190,13 @@ switch Opstring
         try
             run(fullfile(prot_path, protocol, 'save_custom_data_csv.m'));
         catch
+            fprintf('Error: Custom data not saved to server.');
         end
 
         try
             run(fullfile(prot_path, protocol, 'save_GUI_params_csv.m'));
         catch
+            fprintf('Error: GUI params not saved to server.');
         end
 
         try      
@@ -204,9 +206,21 @@ switch Opstring
         %-----------Common scripts across protocols------------------%
         % These do not require try blocks, because they are implemented
         % on the Bpod level
-        SaveSessionDataToFileServer();
-        Write_SessionDataInfo_to_ExperimentTable();
-        Write_to_Husbandry_Log();
+        try
+            SaveSessionDataToFileServer();
+        catch
+            fprintf('Error: Session data not saved to server!');
+        end
+        try
+            Write_SessionDataInfo_to_ExperimentTable();
+        catch
+            fprintf('Error: Session data not saved to database!');
+        end
+        try
+            Write_to_Husbandry_Log();
+        catch
+            fprintf('Error: Husbandry data not saved to database!');
+        end
         %------------------------------------------------------------%
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)
