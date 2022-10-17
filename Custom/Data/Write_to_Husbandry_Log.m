@@ -28,14 +28,14 @@ hubby_info.timestamp = datestr(now,30);
 hubby_info.rat_id = Info.Subject;
 hubby_info.cage_number = -1;
 
+
 protocol_name = BpodSystem.GUIData.ProtocolName;
 
-if protocol_name == 'NosePoke'
-    reward_total = calculate_cumulative_reward();
-    reward_string = strcat(": ", num2str(reward_total));
-    reward_string = strcat(reward_string, "uL water administered");
-    protocol_name = strcat(protocol_name, reward_string);
-end
+reward_total = calculate_cumulative_reward();
+reward_string = strcat(": ", num2str(reward_total));
+reward_string = strcat(reward_string, "uL water administered");
+protocol_name = strcat(protocol_name, reward_string);
+
 
 hubby_info.experimental_treatment = string(protocol_name);
 
