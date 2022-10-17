@@ -10,7 +10,12 @@ Date: October 12, 2022
 global BpodSystem
 
 conn = ConnectToSQL();
-tablename = "test_husbandry_log";
+
+if BpodSystem.EmulatorMode
+    tablename="test_husbandry_log";
+else
+    tablename="husbandry_log";
+end
 
 
 Info = BpodSystem.Data.Info;
