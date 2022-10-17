@@ -15,7 +15,11 @@ global BpodSystem
 
 conn = ConnectToSQL();
 
-tablename="bpod_experiment";
+if BpodSystem.EmulatorMode
+    tablename="test_bpod_experiment";
+else
+    tablename="bpod_experiment";
+end
 
 Info = BpodSystem.Data.Info;
 if Info.Subject == "FakeSubject"  % For testing
