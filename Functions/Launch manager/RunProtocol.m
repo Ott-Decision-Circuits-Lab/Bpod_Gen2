@@ -188,15 +188,9 @@ switch Opstring
         prot_path = BpodSystem.Path.ProtocolFolder;
 
         try
-            run(fullfile(prot_path, protocol, 'save_custom_data_csv.m'));
+            run(fullfile(prot_path, protocol, 'save_custom_data_and_params_csv.m'));
         catch
             fprintf('Error: Custom data not saved to server.');
-        end
-
-        try
-            run(fullfile(prot_path, protocol, 'save_GUI_params_csv.m'));
-        catch
-            fprintf('Error: GUI params not saved to server.');
         end
 
         try      
