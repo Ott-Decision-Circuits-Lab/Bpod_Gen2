@@ -10,7 +10,7 @@ global BpodSystem
 [filepath,name,ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 oldFolder = cd(filepath);
 msg = 'Session data has not been copied to the file server. Please  do it manually.';
-[status, msg] = copyfile([name ext], 'O:\data', 'f')
+[status, msg] = copyfile([name ext], 'O:\data', 'f');
 cd(oldFolder);
 
 end

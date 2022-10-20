@@ -22,10 +22,7 @@ else
 end
 
 Info = BpodSystem.Data.Info;
-if Info.Subject == "FakeSubject"  % For testing
-    % clear exp_info;
-    Info.Subject = -1;
-end
+
 
 [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 exp_info.experiment_id = string(strcat(name, ext));
@@ -33,11 +30,17 @@ exp_info.experiment_id = string(strcat(name, ext));
 session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
 exp_info.session_start_time = datestr(session_start);
 
-exp_info.rat_id = Info.Subject;
+if Info.Subject == "FakeSubject"  % For testing
+    % clear exp_info;
+    exp_info.rat_id = -1;
+else
+    exp_info.rat_id = Info.Subject;
+end
+
 exp_info.experimenter = string(Info.Experimenter);
 exp_info.session_description = strjoin(Info.SessionDescription, '; ');
 exp_info.rig_computer_id = string(strtrim(Info.Rig));
-exp_info.bpod_version = string(Info.Firmware.StateMachineVersion);
+exp_info.bpod_version = string(Info.StateMachineVersion);
 exp_info.bpod_branch_name = string(Info.BpodBranchName);
 exp_info.bpod_branch_hash = string(Info.BpodBranchHash);
 exp_info.bpod_branch_url = string(Info.BpodBranchURL);

@@ -190,7 +190,7 @@ switch Opstring
         try
             run(fullfile(prot_path, protocol, 'save_custom_data_and_params_csv.m'));
         catch
-            fprintf('Error: Custom data not saved to server.');
+            fprintf('Error: Custom data and param csv file not saved to server.\n');
         end
 
         try      
@@ -203,17 +203,17 @@ switch Opstring
         try
             SaveSessionDataToFileServer();
         catch
-            fprintf('Error: Session data not saved to server!');
+            fprintf('Error: Session data not saved to server!\n');
         end
         try
             Write_SessionDataInfo_to_ExperimentTable();
         catch
-            fprintf('Error: Session data not saved to database!');
+            fprintf('Error: Session info not saved to experiment table!\n');
         end
         try
             Write_to_Husbandry_Log();
         catch
-            fprintf('Error: Husbandry data not saved to database!');
+            fprintf('Error: Husbandry data not saved to database!\n');
         end
         %------------------------------------------------------------%
         
