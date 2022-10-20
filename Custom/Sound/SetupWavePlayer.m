@@ -5,6 +5,8 @@ Setup for BpodWavePlayer to produce sounds.
 See also: https://sites.google.com/site/bpoddocumentation/user-guide/function-reference/bpodwaveplayer
 
 Author: gregory@bccn-berlin.de
+
+2022-10-20: by Antonio Lee, adjust setup to be in TriggerProfile mode
 %}
 
 global BpodSystem
@@ -54,5 +56,6 @@ if playback is in progress:
 %}
 Player.TriggerMode = 'Master'; 
 Player.OutputRange = '-5V:5V';
+Player.TriggerProfileEnable = 'On';
 
 end % SetupWavePlayer
