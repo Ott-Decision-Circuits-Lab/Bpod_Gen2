@@ -4,7 +4,7 @@ global BpodSystem
 
 FigureFolder = 'O:\data\session_figures'; %fullfile(fileparts(fileparts(BpodSystem.DataPath)),'Session Figures');
 FigureHandle = BpodSystem.GUIHandles.OutcomePlot.HandleOutcome.Parent; %FigureString = get(FigureHandle,'Name');
-[~, FigureName] = fileparts(BpodSystem.DataPath);
+[~, FigureName] = fileparts(BpodSystem.Path.CurrentDataFile);
 
 if ~isdir(FigureFolder)
     mkdir(FigureFolder);
