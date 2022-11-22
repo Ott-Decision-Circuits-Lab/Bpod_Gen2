@@ -211,6 +211,11 @@ switch Opstring
             fprintf('Error: Session figure not saved to server!\n');
         end
         try
+            SaveAnalysisFigureToFileServer();
+        catch
+            fprintf('Error: Analysis figure not saved to server!\n');
+        end        
+        try
             Write_SessionDataInfo_to_ExperimentTable();
         catch
             fprintf('Error: Session info not saved to experiment table!\n');
