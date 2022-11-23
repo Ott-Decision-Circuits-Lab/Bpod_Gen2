@@ -19,13 +19,19 @@ end
 
 
 Info = BpodSystem.Data.Info;
-if Info.Subject == "FakeSubject"  % For testing
-    % clear hubby_info;
-    Info.Subject = -1;
-end
+% if Info.Subject == "FakeSubject"  % For testing
+%     % clear hubby_info;
+%     Info.Subject = -1;
+% end
 
 hubby_info.timestamp = datestr(now,30);
-hubby_info.rat_id = Info.Subject;
+
+try
+    hubby_info.rat_id = str2num(Info.Subject);
+catch
+    hubby_info.rat_id = -1; %including Fake_subject
+end
+
 hubby_info.cage_number = -1;
 
 
