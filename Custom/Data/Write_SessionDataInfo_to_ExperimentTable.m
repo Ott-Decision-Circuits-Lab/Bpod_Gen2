@@ -34,7 +34,11 @@ if Info.Subject == "FakeSubject"  % For testing
     % clear exp_info;
     exp_info.rat_id = -1;
 else
-    exp_info.rat_id = Info.Subject;
+    try
+        exp_info.rat_id = str2num(Info.Subject);
+    catch
+        exp_info.rat_id = -1;
+    end
 end
 
 exp_info.experimenter = string(Info.Experimenter);
