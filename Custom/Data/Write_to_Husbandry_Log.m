@@ -19,12 +19,15 @@ end
 
 
 Info = BpodSystem.Data.Info;
-% if Info.Subject == "FakeSubject"  % For testing
-%     % clear hubby_info;
-%     Info.Subject = -1;
-% end
+if Info.Subject == "FakeSubject"  % For testing
+    % clear hubby_info;
+    Info.Subject = -1;
+end
 
-hubby_info.timestamp = datestr(now,30);
+session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
+hubby_info.timestamp = datestr(session_start);
+
+hubby_info.rat_id = -1;
 
 try
     hubby_info.rat_id = str2num(Info.Subject);
@@ -33,7 +36,7 @@ catch
 end
 
 hubby_info.cage_number = -1;
-
+hubby_info.license = "TVA 0011/22";
 
 protocol_name = BpodSystem.GUIData.ProtocolName;
 
