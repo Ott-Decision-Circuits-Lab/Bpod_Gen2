@@ -16,7 +16,12 @@ switch mode
         StartFreq = varargin{1}*1000;
         EndFreq = varargin{2}*1000;
         t = 0:(1/SamplingRate):StimulusTime;
-        Sound = chirp(t, StartFreq, StimulusTime, EndFreq, 'logarithmic');
+        if StartFreq == EndFreq
+            mode = 'linear';
+        else
+            mode = 'logarithmic';
+        end
+        Sound = chirp(t, StartFreq, StimulusTime, EndFreq, mode);
         
 end
 
