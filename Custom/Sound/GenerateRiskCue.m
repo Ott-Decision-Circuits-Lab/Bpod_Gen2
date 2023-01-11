@@ -10,11 +10,11 @@ function Sound = GenerateRiskCue(SamplingRate, StimulusTime, mode, varargin)
 
 switch mode
     case 'Freq'
-        % varargin{1} in mode 'Freq' = StartFreq (in kHz) = The freqency of sine wave in the beginning of the waveform
-        % varargin{2} in mode 'Freq' = EndFreq (in kHz) = The freqency of sine wave in the end of the waveform
+        % varargin{1} in mode 'Freq' = StartFreq (in Hz) = The freqency of sine wave in the beginning of the waveform
+        % varargin{2} in mode 'Freq' = EndFreq (in Hz) = The freqency of sine wave in the end of the waveform
         
-        StartFreq = varargin{1};
-        EndFreq = varargin{2};
+        StartFreq = varargin{1}*1000;
+        EndFreq = varargin{2}*1000;
         t = 0:(1/SamplingRate):StimulusTime;
         Sound = chirp(t, StartFreq, StimulusTime, EndFreq, 'logarithmic');
         
