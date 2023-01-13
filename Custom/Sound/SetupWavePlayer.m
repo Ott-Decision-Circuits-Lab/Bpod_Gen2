@@ -12,7 +12,7 @@ Author: gregory@bccn-berlin.de
 global BpodSystem
 
 if nargin < 1
-    fs = 25000;
+    fs = 50000;
 end
 
 %{
