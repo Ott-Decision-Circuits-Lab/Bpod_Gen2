@@ -8,8 +8,8 @@ try
     RewardTrials = TrialData.Rewarded;
     
     RewardChoices = zeros(size(RewardMag)); 
-    RewardChoices(1, TrialData.ChoiceLeft==1 & RewardTrials) = 1; 
-    RewardChoices(2, TrialData.ChoiceLeft==0 & RewardTrials) = 1;
+    RewardChoices(1, TrialData.ChoiceLeft==1 & RewardTrials==1) = 1; 
+    RewardChoices(2, TrialData.ChoiceLeft==0 & RewardTrials==1) = 1;
     side_reward_mat = RewardMag.*RewardChoices;
     
     try
