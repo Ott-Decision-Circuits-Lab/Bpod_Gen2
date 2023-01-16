@@ -1,16 +1,16 @@
-function RewardTotal = calculate_cumulative_reward()
+function RewardTotal = CalculateCumulativeReward()
 global BpodSystem
 
 TrialData = BpodSystem.Data.Custom.TrialData;
 
 try
-    reward_mag = TrialData.RewardMagnitude;
-    reward_trials = TrialData.Rewarded;
+    RewardMag = TrialData.RewardMagnitude;
+    RewardTrials = TrialData.Rewarded;
     
-    reward_choices = zeros(size(reward_mag)); 
-    reward_choices(TrialData.ChoiceLeft==1 & reward_trials, 1) = 1; 
-    reward_choices(TrialData.ChoiceLeft==0 & reward_trials, 2) = 1;
-    side_reward_mat = reward_mag.*reward_choices;
+    RewardChoices = zeros(size(RewardMag)); 
+    RewardChoices(1, TrialData.ChoiceLeft==1 & RewardTrials) = 1; 
+    RewardChoices(2, TrialData.ChoiceLeft==0 & RewardTrials) = 1;
+    side_reward_mat = RewardMag.*RewardChoices;
     
     try
         center_rewards = TrialData.CenterPortRewarded;
@@ -23,5 +23,4 @@ try
 catch  % if no reward is found, report 0uL
     RewardTotal = 0;
 end
-
-end  % calculate_cumulative_reward()
+end
