@@ -190,7 +190,7 @@ switch Opstring
         try
             run(fullfile(prot_path, protocol, 'save_custom_data_and_params_csv.m'));
         catch
-            fprintf('Error: Custom data and param csv file not saved to server.\n');
+            warning('Error: Custom data and param csv file not saved to server.\n');
         end
 
 %         try      
@@ -200,16 +200,9 @@ switch Opstring
         %-----------Common scripts across protocols------------------%
         % These do not require try blocks, because they are implemented
         % on the Bpod level
-        try
-            SaveSessionDataToFileServer();
-        catch
-            fprintf('Error: Session data not saved to server!\n');
-        end
-        try
-            SaveSessionFigureToFileServer();
-        catch
-            fprintf('Error: Session figure not saved to server!\n');
-        end
+        SaveSessionDataToFileServer();
+        SaveSessionFigureToFileServer();
+        
         try
             SaveAnalysisFigureToFileServer();
         catch

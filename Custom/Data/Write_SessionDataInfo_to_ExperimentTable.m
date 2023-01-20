@@ -15,30 +15,38 @@ global BpodSystem
 
 conn = ConnectToSQL();
 
-if BpodSystem.EmulatorMode
-    tablename="test_bpod_experiment";
-else
-    tablename="bpod_experiment";
+try
+    if BpodSystem.EmulatorMode
+        tablename = "test_bpod_experiment";
+    else
+        tablename = "bpod_experiment";
+    end
+catch
+    warning('Error: BpodSystem not found.')
 end
 
-Info = BpodSystem.Data.Info;
+try
+    Info = BpodSystem.Data.Info;
+catch
+    warning('Error: BpodSystem Info not found.')
+end
 
+try
+    [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
+catch
+    warning('Error: CurrentDataFile not found.')
+end
 
-[filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 exp_info.experiment_id = string(strcat(name, ext));
-
 session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
 exp_info.session_start_time = datestr(session_start);
 
+exp_info.rat_id = str2num(Info.Subject);
 if Info.Subject == "FakeSubject"  % For testing
     % clear exp_info;
     exp_info.rat_id = -1;
-else
-    try
-        exp_info.rat_id = str2num(Info.Subject);
-    catch
-        exp_info.rat_id = -1;
-    end
+elseif isempty(exp_info.rat_id)
+    exp_info.rat_id = -2;
 end
 
 exp_info.experimenter = string(Info.Experimenter);
