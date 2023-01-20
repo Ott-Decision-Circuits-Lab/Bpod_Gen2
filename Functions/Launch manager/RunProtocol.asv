@@ -190,7 +190,7 @@ switch Opstring
         try
             run(fullfile(prot_path, protocol, 'save_custom_data_and_params_csv.m'));
         catch
-            warning('Error: Custom data and param csv file not saved to server.');
+            warning('Error: Custom data and param csv file not saved to server.\n');
         end
 
 %         try      
@@ -208,8 +208,16 @@ switch Opstring
         catch
             warning('Error: Analysis figure not saved to server!\n');
         end        
-        Write_SessionDataInfo_to_ExperimentTable();
-        Write_to_Husbandry_Log();
+        try
+            Write_SessionDataInfo_to_ExperimentTable();
+        catch
+            fprintf('Error: Session info not saved to experiment table!\n');
+        end
+        try
+            Write_to_Husbandry_Log();
+        catch
+            fprintf('Error: Husbandry data not saved to database!\n');
+        end
         %------------------------------------------------------------%
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)

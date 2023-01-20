@@ -5,6 +5,7 @@ global BpodSystem
 FigureFolder = 'O:\share\session_figure'; %fullfile(fileparts(fileparts(BpodSystem.DataPath)),'Session Figures');
 
 if ~isdir(FigureFolder)
+    disp('FigureFolder is not a directory. A folder is created.')
     mkdir(FigureFolder);
 end
 
@@ -31,4 +32,5 @@ catch
     return
 end
 
+disp('SessionFigure is successfully saved in file server.')
 end

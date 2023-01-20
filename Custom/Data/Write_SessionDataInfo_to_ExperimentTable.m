@@ -22,19 +22,22 @@ try
         tablename = "bpod_experiment";
     end
 catch
-    warning('Error: BpodSystem not found.')
+    warning('Error: BpodSystem not found. Session info not saved to database!')
+    return
 end
 
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('Error: BpodSystem Info not found.')
+    warning('Error: BpodSystem Info not found. Session info not saved to database!')
+    return
 end
 
 try
     [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
-    warning('Error: CurrentDataFile not found.')
+    warning('Error: CurrentDataFile not found. Session info not saved to database!')
+    return
 end
 
 exp_info.experiment_id = string(strcat(name, ext));
@@ -73,6 +76,13 @@ exp_info.metadata_file_path = metadata_path;
 
 
 exp_info_table = struct2table(exp_info);
-sqlwrite(conn, tablename, exp_info_table)
-
+try
+    sqlwrite(conn, tablename, exp_info_table)
+catch
+    warning('Error: Insuccessful writing on bpod_experiment.')
+    close(conn)
+    return
+end
+close(conn)
+disp('SessionData is successfully written to bpod_experiment.')
 end  % Write_SessionDataInfo_to_ExperimentTable()

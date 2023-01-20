@@ -7,15 +7,14 @@ function SaveSessionDataToFileServer()
 
 global BpodSystem
 
-try 
-    [filepath,name,ext] = fileparts(BpodSystem.Path.CurrentDataFile);
-    oldFolder = cd(filepath);
-    [status, msg] = copyfile([name ext], 'O:\data', 'f');
-    msg
-    cd(oldFolder);
-catch
-    warning('Error: Session data not saved to server!\n');
-    return
-end
+[filepath,name,ext] = fileparts(BpodSystem.Path.CurrentDataFile);
+oldFolder = cd(filepath);
+[status, msg] = copyfile([name ext], 'O:\data', 'f');
 
+if status
+    disp('SessionData is successfully saved in file server.')
+else
+    warning(msg)
+    warning('Error: Session data not saved to server!');
+end
 end

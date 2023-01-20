@@ -20,7 +20,7 @@ end
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('Error: BpodSystem Info not found. No writing to husbandry_log.')
+    warning('Error: BpodSystem Info not found. Husbandry data not saved to database!')
     return
 end
 
@@ -39,13 +39,20 @@ hubby_info.cage_number = -1;
 hubby_info.license = "TVA 0011/22";
 
 protocol_name = BpodSystem.GUIData.ProtocolName;
-hubby_info.experimental_treatment = str(strcat("Bpod experiment:", protocol_name));
+hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
 
 reward_total = calculate_cumulative_reward();
 reward_string = strcat(num2str(reward_total), "uL water administered in experiment.");
-hubby_info.husbandry_treatment = str(reward_string);
+hubby_info.husbandry_treatment = string(reward_string);
 
 hubby_info_table = struct2table(hubby_info);
-sqlwrite(conn, tablename, hubby_info_table)
-
+try
+    sqlwrite(conn, tablename, hubby_info_table)
+catch
+    warning('Error: Unsuccessful writing to husbandry_log.')
+    close(conn)
+    return
+end
+close(conn)
+disp('HusbandryData is successfully written to husbandry_log.')
 end
