@@ -12,7 +12,8 @@ global BpodSystem
 try
     conn = ConnectToSQL();
 catch
-    warning('Error: Connection to ott_lab database is not sucessful.')
+    warning('Error: Connection to ott_lab database is not sucessful. Husbandry data not saved to database!')
+    return
 end
 
 if BpodSystem.EmulatorMode
@@ -25,31 +26,39 @@ try
     Info = BpodSystem.Data.Info;
 catch
     warning('Error: BpodSystem Info not found. Husbandry data not saved to database!')
+    close(conn)
     return
 end
 
-session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
-hubby_info.timestamp = datestr(session_start);
-
-hubby_info.rat_id = str2num(Info.Subject);
-if Info.Subject == "FakeSubject"  % For testing
-    % clear hubby_info;
-    hubby_info.rat_id = -1;
-elseif isempty(hubby_info.rat_id)
-    hubby_info.rat_id = -2;
+try
+    session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
+    hubby_info.timestamp = datestr(session_start);
+    
+    hubby_info.rat_id = str2num(Info.Subject);
+    if Info.Subject == "FakeSubject"  % For testing
+        % clear hubby_info;
+        hubby_info.rat_id = -1;
+    elseif isempty(hubby_info.rat_id)
+        hubby_info.rat_id = -2;
+    end
+    
+    hubby_info.cage_number = -1;
+    hubby_info.license = "TVA 0011/22";
+    
+    protocol_name = BpodSystem.GUIData.ProtocolName;
+    hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
+    
+    reward_total = calculate_cumulative_reward();
+    reward_string = strcat(num2str(reward_total), "uL water administered in experiment.");
+    hubby_info.husbandry_treatment = string(reward_string);
+    
+    hubby_info_table = struct2table(hubby_info);
+catch
+    warning('Error: Insufficient experiment info for creating table.')
+    close(conn)
+    return
 end
 
-hubby_info.cage_number = -1;
-hubby_info.license = "TVA 0011/22";
-
-protocol_name = BpodSystem.GUIData.ProtocolName;
-hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
-
-reward_total = calculate_cumulative_reward();
-reward_string = strcat(num2str(reward_total), "uL water administered in experiment.");
-hubby_info.husbandry_treatment = string(reward_string);
-
-hubby_info_table = struct2table(hubby_info);
 try
     sqlwrite(conn, tablename, hubby_info_table)
 catch
