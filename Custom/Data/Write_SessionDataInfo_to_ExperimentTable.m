@@ -66,7 +66,7 @@ exp_info.protocol_branch_url = string(Info.SessionProtocolBranchURL);
 first_trial_start = BpodSystem.Data.TrialStartTimestamp(1);
 last_trial_end = BpodSystem.Data.TrialEndTimestamp(end);
 session_len = last_trial_end - first_trial_start;
-exp_info.session_length = string(session_len / 1000);
+exp_info.session_length = string(session_len); % (s)
 exp_info.raw_data_file_path = "O:\data\";
 
 trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));

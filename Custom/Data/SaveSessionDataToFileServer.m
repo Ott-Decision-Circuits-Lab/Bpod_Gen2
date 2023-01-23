@@ -14,7 +14,6 @@ oldFolder = cd(filepath);
 if status
     disp('SessionData is successfully saved in file server.')
 else
-    warning(msg)
-    warning('Error: Session data not saved to server!');
+    warning(strcat(msg, ' Error: Session data not saved to server!'))
 end
 end

@@ -9,5 +9,6 @@ catch
     warning('Error: Connection to ott_lab database is not sucessful. Contact admin for support.')
     return
 end
+disp('Successful connection to ott_lab.');
 end
 
