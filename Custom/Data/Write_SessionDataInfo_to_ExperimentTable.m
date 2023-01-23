@@ -13,7 +13,11 @@ Date: October 12, 2022
 
 global BpodSystem
 
-conn = ConnectToSQL();
+try
+    conn = ConnectToSQL();
+catch
+    warning('Error: Connection to ott_lab database is not sucessful.')
+end
 
 try
     if BpodSystem.EmulatorMode
