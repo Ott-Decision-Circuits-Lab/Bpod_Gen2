@@ -1,4 +1,4 @@
-function Write_to_Husbandry_Log()
+function WriteToHusbandryLog()
 %{
 Function to register in the database's husbandry log
 that a procedure was undertaken.

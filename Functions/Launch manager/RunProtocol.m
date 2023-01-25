@@ -188,7 +188,7 @@ switch Opstring
         prot_path = BpodSystem.Path.ProtocolFolder;
 
         try
-            run(fullfile(prot_path, protocol, 'save_custom_data_and_params_csv.m'));
+            run(fullfile(prot_path, protocol, 'SaveCustomDataAndParamsCSV.m'));
         catch
             warning('Error: Custom data and param csv file not saved to server.');
         end
@@ -208,8 +208,8 @@ switch Opstring
         catch
             warning('Error: Analysis figure not saved to server!\n');
         end        
-        Write_SessionDataInfo_to_ExperimentTable();
-        Write_to_Husbandry_Log();
+        WriteSessionDataInfoToExperimentTable();
+        WriteToHusbandryLog();
         %------------------------------------------------------------%
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)

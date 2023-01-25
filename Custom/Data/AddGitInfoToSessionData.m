@@ -11,7 +11,7 @@ function TE=AddGitInfoToSessionData(TE)
 
 % Insert Protocol Git Info
 global BpodSystem
-gitInfo = getGitInfo();
+gitInfo = GetGitInfo();
 
 if ~isempty(gitInfo)
     TE.Info.SessionProtocolBranchName = gitInfo.branch;
@@ -22,7 +22,7 @@ end
 
 % Insert Bpod Git Info
 WorkingDir = cd(BpodSystem.Path.BpodRoot);
-gitInfo = getGitInfo();
+gitInfo = GetGitInfo();
 
 if ~isempty(gitInfo)
     TE.Info.BpodBranchName = gitInfo.branch;

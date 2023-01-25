@@ -1,4 +1,4 @@
-function gitInfo=getGitInfo()
+function gitInfo=GetGitInfo()
 % Get information about the Git repository in the current directory, including: 
 %          - branch name of the current Git Repo 
 %          -Git SHA1 HASH of the most recent commit

@@ -1,4 +1,4 @@
-function Write_SessionDataInfo_to_ExperimentTable()
+function WriteSessionDataInfoToExperimentTable()
 %{
 Function to write information about the Bpod experiment to the 
 bpod_experiment table in the database.
