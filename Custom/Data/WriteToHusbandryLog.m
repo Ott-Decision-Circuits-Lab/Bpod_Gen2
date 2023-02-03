@@ -48,7 +48,7 @@ try
     protocol_name = BpodSystem.GUIData.ProtocolName;
     hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
     
-    reward_total = calculate_cumulative_reward();
+    reward_total = CalculateCumulativeReward();
     reward_string = strcat(num2str(reward_total), "uL water administered in experiment.");
     hubby_info.husbandry_treatment = string(reward_string);
     
