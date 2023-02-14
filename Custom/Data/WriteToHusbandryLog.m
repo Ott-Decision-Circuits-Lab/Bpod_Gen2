@@ -49,8 +49,8 @@ try
     hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
     
     reward_total = CalculateCumulativeReward();
-    reward_string = strcat(num2str(reward_total), "uL water administered in experiment.");
-    hubby_info.husbandry_treatment = string(reward_string);
+    reward_string = strcat(num2str(reward_total), "uL");
+    hubby_info.water_scheduling = string(reward_string);
     
     hubby_info_table = struct2table(hubby_info);
 catch
