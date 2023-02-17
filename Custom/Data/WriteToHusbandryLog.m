@@ -8,6 +8,7 @@ Date: October 12, 2022
 %}
 
 global BpodSystem
+global TaskParameters
 
 try
     conn = ConnectToSQL();
@@ -45,8 +46,12 @@ try
     hubby_info.cage_number = -1;
     hubby_info.license = "TVA 0011/22";
     
-    protocol_name = BpodSystem.GUIData.ProtocolName;
-    hubby_info.experimental_treatment = string(strcat("Bpod experiment:", protocol_name));
+    ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
+    
+    if TaskParameters.GUI.EphysSession
+        ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
+    end
+    hubby_info.experimental_treatment = string(ExperimentalTreatment);
     
     reward_total = CalculateCumulativeReward();
     reward_string = strcat(num2str(reward_total), "uL");
