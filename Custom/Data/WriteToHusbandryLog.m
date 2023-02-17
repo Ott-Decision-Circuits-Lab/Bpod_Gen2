@@ -48,7 +48,8 @@ try
     
     ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     
-    if TaskParameters.GUI.EphysSession
+
+    if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
     end
     hubby_info.experimental_treatment = string(ExperimentalTreatment);
