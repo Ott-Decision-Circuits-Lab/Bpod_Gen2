@@ -16,7 +16,7 @@ global BpodSystem
 try
     conn = ConnectToSQL();
 catch
-    warning('Error: Connection to ott_lab database is not sucessful. Session info not saved to database!')
+    warning('Error: Connection to ott_lab database is not successful. Session info not saved to database!')
     return
 end
 
@@ -97,5 +97,5 @@ catch
     return
 end
 close(conn)
-disp('SessionData is successfully written to bpod_experiment.')
+disp('-> SessionData written to bpod_experiment table in database.')
 end  % Write_SessionDataInfo_to_ExperimentTable()

@@ -32,5 +32,5 @@ catch
     return
 end
 
-disp('SessionFigure is successfully saved in file server.')
+disp('-> SessionFigure is successfully saved in file server.')
 end

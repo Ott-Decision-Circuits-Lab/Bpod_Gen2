@@ -11,6 +11,5 @@ catch
     return
 end
 
-disp('Successful connection to ott_lab.');
 end
 

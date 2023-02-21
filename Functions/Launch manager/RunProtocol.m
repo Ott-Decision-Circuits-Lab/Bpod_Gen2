@@ -181,6 +181,9 @@ switch Opstring
             end
         end
     case 'Stop'
+        disp('#---------------------------------------------------#');
+        disp('#           Saving data before exiting              #');
+        disp('#---------------------------------------------------#');
         %-------------Protocol-specific scripts----------------------%
         % These require try blocks, because they may not be implemented
         % in a given protocol
@@ -189,6 +192,7 @@ switch Opstring
 
         try
             run(fullfile(prot_path, protocol, 'SaveCustomDataAndParamsCSV.m'));
+            disp('-> Custom data and params written to .csv on server.')
         catch
             warning('Error: Custom data and param csv file not saved to server.');
         end
@@ -205,12 +209,14 @@ switch Opstring
         
         try
             SaveAnalysisFigureToFileServer();
+            disp('-> Analysis figure saved on server.')
         catch
-            warning('Error: Analysis figure not saved to server!\n');
+            warning('Analysis figure not saved to server!');
         end        
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
         %------------------------------------------------------------%
+        disp('#---------------------------------------------------#');
         
         if ~isempty(BpodSystem.Status.CurrentProtocolName)
             disp(' ')

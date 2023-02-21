@@ -73,5 +73,5 @@ catch
     return
 end
 close(conn)
-disp('HusbandryData is successfully written to husbandry_log.')
+disp('-> HusbandryData written to husbandry_log table in database.')
 end

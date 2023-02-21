@@ -12,7 +12,7 @@ oldFolder = cd(filepath);
 [status, msg] = copyfile([name ext], 'O:\data', 'f');
 
 if status
-    disp('SessionData is successfully saved in file server.')
+    disp('-> SessionData saved as .mat on file server.')
 else
     warning(strcat(msg, ' Error: Session data not saved to server!'))
 end
