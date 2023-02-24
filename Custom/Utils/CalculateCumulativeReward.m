@@ -5,14 +5,16 @@ TrialData = BpodSystem.Data.Custom.TrialData;
 RewardTotal = 0;
 
 SideRewardTrials = TrialData.Rewarded;
-LeftChoices = TrialData.ChoiceLeft;
 
 if sum(SideRewardTrials)
-    LeftRewardedChoices = LeftChoices & SideRewardTrials;
-    TotalLeftReward = dot(TrialData.RewardMagnitudeL, LeftRewardedChoices);
+    LeftChoices = TrialData.ChoiceLeft;
+    NotNan = ~isnan(LeftChoices);
+    LeftRewards = LeftChoices(NotNan) & SideRewardTrials(NotNan);
+    TotalLeftReward = dot(TrialData.RewardMagnitudeL(NotNan), LeftRewards);
 
-    RightRewardedChoices = ~LeftChoices & SideRewardTrials;
-    TotalRightReward = dot(TrialData.RewardMagnitudeR, RightRewardedChoices);
+    RightChoices = ~LeftChoices(NotNan);
+    RightRewards = RightChoices & SideRewardTrials(NotNan);
+    TotalRightReward = dot(TrialData.RewardMagnitudeR(NotNan), RightRewards);
     
     RewardTotal = TotalLeftReward + TotalRightReward;
 end
@@ -23,6 +25,5 @@ try  % not all protocols have center reward
 
     RewardTotal = RewardTotal + dot(CenterMag, CenterRewardTrials);
 end
-
 
 end %function
