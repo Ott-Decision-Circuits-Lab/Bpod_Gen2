@@ -6,7 +6,7 @@ RewardTotal = 0;
 
 SideRewardTrials = TrialData.Rewarded;
 
-if sum(SideRewardTrials)
+if sum(~isnan(SideRewardTrials))
     LeftChoices = TrialData.ChoiceLeft;
     NotNan = ~isnan(LeftChoices);
     LeftRewards = LeftChoices(NotNan) & SideRewardTrials(NotNan);
