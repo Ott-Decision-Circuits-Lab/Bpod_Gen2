@@ -58,5 +58,5 @@ if playback is in progress:
 Player.TriggerMode = 'Master'; 
 Player.OutputRange = '-5V:5V';
 Player.TriggerProfileEnable = 'On';
-
+BpodSystem.Data.Custom.SessionMeta.AOModule = true;
 end % SetupWavePlayer

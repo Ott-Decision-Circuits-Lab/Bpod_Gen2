@@ -43,4 +43,5 @@ Player.Port  % Prints the port to the Command Window
 
 Player.DigitalAttenuation_dB = -10;
 Player.SamplingRate = fs; %fs = 192000 % Use max (192kHz) supported sampling rate (fs = sampling freq)
+BpodSystem.Data.Custom.SessionMeta.HiFiModule = true;
 end % SetupWavePlayer
