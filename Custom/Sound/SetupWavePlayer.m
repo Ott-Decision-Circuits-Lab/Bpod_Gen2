@@ -1,4 +1,4 @@
-function [Player,fs]=SetupWavePlayer(fs)
+function [Player,fs] = SetupWavePlayer(fs)
 %{
 Setup for BpodWavePlayer to produce sounds.
 
@@ -11,6 +11,7 @@ Author: gregory@bccn-berlin.de
 
 global BpodSystem
 
+% Use max (8 Channels: 25kHz; 4 Channels: 50kHz; 2 Channels: 100kHz)
 if nargin < 1
     fs = 50000;
 end
@@ -44,9 +45,9 @@ end
 Player = BpodWavePlayer(WavePlayerUSB);
 Player.Port  % Prints the port to the Command Window
 
-%fs = 25000 % Use max (25kHz; 50kHz if Channels 5-8 are disabled, see below) supported sampling rate (fs = sampling freq)
 Player.SamplingRate = fs;
-Player.BpodEvents = {'On', 'On', 'Off', 'Off', 'Off', 'Off', 'Off', 'Off'}; % for 8-channel hardware
+Player.BpodEvents(:) = {'Off'};
+Player.BpodEvents(1:2) = {'On'}; % regardless of channel size, first two turn on
 %{
 % TriggerMode describes the response to a trigger event 
 if playback is in progress: 

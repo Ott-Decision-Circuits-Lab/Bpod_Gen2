@@ -1,4 +1,4 @@
-function [Player,fs]=SetupHiFi(fs)
+function [Player,fs] = SetupHiFi(fs)
 %{
 Setup for BpodHiFi to produce sounds.
 
@@ -38,7 +38,7 @@ You will need:
 BpodSystem.assertModule('HiFi', 1); % The second argument (1) indicates that the HiFi module must be paired with its USB serial port
 
 % Instantiate BpodWavePlayer object
-Player = BpodHiFi(HiFiUSB);
+Player = BpodHiFi(BpodSystem.ModuleUSB.HiFi1);
 Player.Port  % Prints the port to the Command Window
 
 Player.DigitalAttenuation_dB = -10;
