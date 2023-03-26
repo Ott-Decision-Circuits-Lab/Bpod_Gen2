@@ -1,4 +1,4 @@
-function [Player,fs] = SetupWavePlayer(fs)
+function [Player, fs] = SetupWavePlayer(ChannelNumber)
 %{
 Setup for BpodWavePlayer to produce sounds.
 
@@ -13,9 +13,19 @@ global BpodSystem
 
 % Use max (8 Channels: 25kHz; 4 Channels: 50kHz; 2 Channels: 100kHz)
 if nargin < 1
-    fs = 50000;
+    ChannelNumber = 2; % default if no input
 end
 
+if ChannelNumber <= 2
+    fs = 100000;
+elseif ChannelNumber <= 4
+    fs = 50000;
+elseif ChannelNumber <= 8
+    fs = 25000;
+else
+    error('Error: The input ChannelNumber is larger than the supported configuration. Please correct the protocol.')
+end
+    
 %{
 ---------------------------------------------------------------------------
                                 SETUP
@@ -43,7 +53,7 @@ Player.Port  % Prints the port to the Command Window
 
 Player.SamplingRate = fs;
 Player.BpodEvents(:) = {'Off'};
-Player.BpodEvents(1:2) = {'On'}; % regardless of channel size, first two turn on
+Player.BpodEvents(1:ChannelNumber) = {'On'}; % regardless of channel size, first two turn on
 %{
 % TriggerMode describes the response to a trigger event 
 if playback is in progress: 
