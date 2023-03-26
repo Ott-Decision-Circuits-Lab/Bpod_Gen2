@@ -35,11 +35,7 @@ You will need:
 % Instantiate waveplayer and set parameters
 %--------------------------------------------------------------------------
 % Check that the Analog Output Module hardware has been assigned a USB port
-if (isfield(BpodSystem.ModuleUSB, 'WavePlayer1'))
-    WavePlayerUSB = BpodSystem.ModuleUSB.WavePlayer1;
-else
-    error('Error: To run this protocol, you must first pair the Analog Output Module (hardware) with its USB port. Click the USB config button on the Bpod console.')
-end
+BpodSystem.assertModule('WavePlayer', 1); % The second argument (1) indicates that the HiFi module must be paired with its USB serial port
 
 % Instantiate BpodWavePlayer object
 Player = BpodWavePlayer(WavePlayerUSB);
