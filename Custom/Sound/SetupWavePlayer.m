@@ -48,7 +48,7 @@ You will need:
 BpodSystem.assertModule('WavePlayer', 1); % The second argument (1) indicates that the HiFi module must be paired with its USB serial port
 
 % Instantiate BpodWavePlayer object
-Player = BpodWavePlayer(WavePlayerUSB);
+Player = BpodWavePlayer(BpodSystem.ModuleUSB.WavePlayer1);
 Player.Port  % Prints the port to the Command Window
 
 Player.SamplingRate = fs;
