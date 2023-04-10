@@ -44,7 +44,7 @@ try
     end
     
     hubby_info.cage_number = -1;
-    hubby_info.license = "TVA 0011/22";
+    hubby_info.license = "G0011/22";
     
     ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     
