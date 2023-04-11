@@ -206,6 +206,7 @@ switch Opstring
         % on the Bpod level
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
+        SavePhotometryFiguresToFileServer();
         
         try
             SaveAnalysisFigureToFileServer();
