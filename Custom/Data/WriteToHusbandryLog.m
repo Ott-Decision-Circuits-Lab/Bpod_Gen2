@@ -13,7 +13,7 @@ global TaskParameters
 try
     conn = ConnectToSQL();
 catch
-    warning('Error: Connection to ott_lab database is not sucessful. Husbandry data not saved to database!')
+    warning('Connection to ott_lab database is not sucessful. Husbandry data not saved to database!')
     return
 end
 
@@ -26,7 +26,7 @@ end
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('Error: BpodSystem Info not found. Husbandry data not saved to database!')
+    warning('BpodSystem Info not found. Husbandry data not saved to database!')
     close(conn)
     return
 end
@@ -60,7 +60,7 @@ try
     
     hubby_info_table = struct2table(hubby_info);
 catch
-    warning('Error: Insufficient experiment info for creating table.')
+    warning('Insufficient experiment info for creating table.')
     close(conn)
     return
 end
@@ -68,10 +68,11 @@ end
 try
     sqlwrite(conn, tablename, hubby_info_table)
 catch
-    warning('Error: Unsuccessful writing to husbandry_log.')
+    warning('Unsuccessful writing to husbandry_log.')
     close(conn)
     return
 end
+
 close(conn)
 disp('-> HusbandryData written to husbandry_log table in database.')
 end

@@ -16,7 +16,7 @@ global BpodSystem
 try
     conn = ConnectToSQL();
 catch
-    warning('Error: Connection to ott_lab database is not successful. Session info not saved to database!')
+    warning('Connection to ott_lab database is not successful. Session info not saved to database!')
     return
 end
 
@@ -27,14 +27,14 @@ try
         tablename = "bpod_experiment";
     end
 catch
-    warning('Error: BpodSystem not found. Session info not saved to database!')
+    warning('BpodSystem not found. Session info not saved to database!')
     return
 end
 
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('Error: BpodSystem Info not found. Session info not saved to database!')
+    warning('BpodSystem Info not found. Session info not saved to database!')
     close(conn)
     return
 end
@@ -42,7 +42,7 @@ end
 try
     [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
-    warning('Error: CurrentDataFile not found. Session info not saved to database!')
+    warning('CurrentDataFile not found. Session info not saved to database!')
     close(conn)
     return
 end
@@ -85,7 +85,7 @@ try
     
     exp_info_table = struct2table(exp_info);
 catch
-    warning('Error: Insufficient experiment info for creating table.')
+    warning('Insufficient experiment info for creating table.')
     close(conn)
     return
 end
@@ -93,7 +93,7 @@ end
 try
     sqlwrite(conn, tablename, exp_info_table)
 catch
-    warning('Error: Insuccessful writing on bpod_experiment.')
+    warning('Insuccessful writing on bpod_experiment.')
     close(conn)
     return
 end

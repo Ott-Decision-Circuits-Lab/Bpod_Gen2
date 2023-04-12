@@ -2,20 +2,11 @@ function SaveAnalysisFigureToFileServer()
 global BpodSystem
 %The function Analysis should be inside the folder of protocol!
 
-%% define paths
+%% check if a corresponding session data and info is created
 try
     Info = BpodSystem.Data.Info;
 catch
     warning('No data info found. Analysis figure not saved to server!');
-    return
-end
-
-try
-    SessionFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
-                            Info.SessionDate, '_', Info.SessionStartTime_UTC);
-    FigureFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_graph\');
-catch
-    warning('Not enough data info for path definition. Analysis figure not saved to server!');
     return
 end
 
@@ -34,19 +25,48 @@ catch
     return
 end
 
-%% save plot to paths
+%% check or else create folders for saving in bpod_graph (duplicated copy for cross-session view)
 try
-    FigurePathAnalysis = fullfile(FigureFolder, [FigureName, '_Analysis.png']);
-    saveas(FigAnalysis, FigurePathAnalysis, 'png');
-    
-    FigurePathAnalysis = fullfile(SessionFolder, [FigureName, '_Analysis.png']);
-    saveas(FigAnalysis, FigurePathAnalysis, 'png');          
+    FigureFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_graph\');
 catch
-    warning('Analysis figure not saved to server!');
+    warning('Not enough data info for path definition. Analysis figure not saved to server!');
     return
 end
 
-close(FigAnalysis);
-disp('-> Analysis figure saved on server.')
+if ~isdir(FigureFolder)
+    disp('bpod_graph is not a directory. A folder is created.')
+    mkdir(FigureFolder);
+end
 
+FigurePathAnalysis = fullfile(FigureFolder, [FigureName, '_Analysis.png']);
+try
+    saveas(FigAnalysis, FigurePathAnalysis, 'png');
+    disp('-> Analysis figure is  successfully saved in the bpod_graph folder in the file server.')
+catch
+    warning('Analysis figure not saved to bpod_graph folder!');
+end
+
+%% check or else create folders for saving in bpod_session
+try
+    SessionFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
+                        Info.SessionDate, '_', Info.SessionStartTime_UTC);
+catch
+    warning('Not enough data info for path definition. Session figure not saved to server!');
+    return
+end
+
+if ~isdir(SessionFolder)
+    disp('Session folder is not a directory. A folder is created.')
+    mkdir(SessionFolder);
+end
+
+FigurePath = fullfile(SessionFolder, [FigureName, '.png']);
+try
+    saveas(FigureHandle, FigurePath, 'png');
+    disp('-> Analysis figure is  successfully saved in the bpod_session folder in the file server.')
+catch
+    warning('Analysis figure not saved to bpod_session folder!');
+end
+
+close(FigAnalysis);
 end

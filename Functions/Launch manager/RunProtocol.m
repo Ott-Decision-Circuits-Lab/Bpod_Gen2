@@ -197,17 +197,13 @@ switch Opstring
             warning('Error: Custom data and param csv file not saved to server.');
         end
 
-%         try      
-%             run(fullfile(prot_path, protocol, 'UserKillScript.m'));
-%         catch
-%         end
         %-----------Common scripts across protocols------------------%
         % These do not require try blocks, because they are implemented
         % on the Bpod level
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
-        SavePhotometryFiguresToFileServer();
         SaveAnalysisFigureToFileServer();        
+        SavePhotometryFiguresToFileServer();
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
         %------------------------------------------------------------%
