@@ -12,7 +12,7 @@ end
 
 %% check if a corresponding session data and info is created
 try
-    [~, FigureName] = fileparts(BpodSystem.Path.CurrentDataFile);
+    [~, FigureName, ~] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
     warning('No data file found. Session figure not saved to server!');
     return
@@ -33,7 +33,7 @@ catch
     return
 end
 
-if ~isdir(FigureFolder)
+if ~isfolder(FigureFolder)
     disp('bpod_graph is not a directory. A folder is created.')
     mkdir(FigureFolder);
 end
@@ -47,15 +47,16 @@ catch
 end
 
 %% check or else create folders for saving in bpod_session
+TimestampStr = FigureName(end-14:end);
 try
     SessionFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
-                        Info.SessionDate, '_', Info.SessionStartTime_UTC);
+                           TimestampStr);
 catch
     warning('Not enough data info for path definition. Session figure not saved to server!');
     return
 end
 
-if ~isdir(SessionFolder)
+if ~isfolder(SessionFolder)
     disp('Session folder is not a directory. A folder is created.')
     mkdir(SessionFolder);
 end
