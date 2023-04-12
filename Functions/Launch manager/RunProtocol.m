@@ -207,13 +207,7 @@ switch Opstring
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
         SavePhotometryFiguresToFileServer();
-        
-        try
-            SaveAnalysisFigureToFileServer();
-            disp('-> Analysis figure saved on server.')
-        catch
-            warning('Analysis figure not saved to server!');
-        end        
+        SaveAnalysisFigureToFileServer();        
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
         %------------------------------------------------------------%
