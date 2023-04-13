@@ -202,7 +202,7 @@ switch Opstring
         % on the Bpod level
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
-        SaveAnalysisFigureToFileServer();        
+        SaveAnalysisFigureToFileServer();
         SavePhotometryFiguresToFileServer();
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();

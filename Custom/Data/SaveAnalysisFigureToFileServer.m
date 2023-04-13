@@ -2,6 +2,13 @@ function SaveAnalysisFigureToFileServer()
 global BpodSystem
 %The function Analysis should be inside the folder of protocol!
 
+%% check if there is protocol-specific analysis
+cd
+if isfile('Analysis.m') == 0
+    disp('-> No protocol-specific Analysis.m is found. No analysis figure is  saved in the file server.')
+    return
+end
+
 %% check if a corresponding session data and info is created
 try
     Info = BpodSystem.Data.Info;

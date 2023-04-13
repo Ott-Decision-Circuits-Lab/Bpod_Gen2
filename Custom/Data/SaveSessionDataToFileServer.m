@@ -32,6 +32,7 @@ catch
 end
 
 if ~isfolder(SessionFolder)
+    disp('bpod_session is not a directory. A folder is created.')
     mkdir(SessionFolder);
 end
 
