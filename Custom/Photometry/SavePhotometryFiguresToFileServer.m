@@ -47,7 +47,7 @@ end
 %% saving 1-2 photometry figure(s) with correct indexing
 for i = 1:length(FigureHandles)
     idx = 1;
-    if isempty(FigureHandleNidaq1)
+    if isempty(FigureHandleNidaq1) || i == 2
         idx = 2;
     end
     
@@ -67,7 +67,7 @@ for i = 1:length(FigureHandles)
     FigurePathAnalysis = fullfile(FigureFolder, [FigureName, strcat('_Nidaq', num2str(idx), '.png')]);
     try
         saveas(FigureHandles(i), FigurePathAnalysis, 'png');
-        disp(strcat('-> Naidaq',num2str(idx),' figure is  successfully saved in the bpod_graph folder in the file server.'))
+        disp(strcat('-> Nidaq',num2str(idx),' figure is  successfully saved in the bpod_graph folder in the file server.'))
     catch
         warning('Photometry figure not saved to bpod_graph folder!');
     end
@@ -90,7 +90,7 @@ for i = 1:length(FigureHandles)
     FigurePathAnalysis = fullfile(SessionFolder, [FigureName, strcat('_Nidaq', num2str(idx), '.png')]);
     try
         saveas(FigureHandles(i), FigurePathAnalysis, 'png');
-        disp(strcat('-> Naidaq',num2str(idx),' figure is  successfully saved in the bpod_graph folder in the file server.'))
+        disp(strcat('-> Nidaq',num2str(idx),' figure is  successfully saved in the bpod_graph folder in the file server.'))
     catch
         warning('Photometry figure not saved to bpod_session folder!');
     end
