@@ -3,7 +3,7 @@ global BpodSystem
 global TaskParameters
 
 %% check if there is photometry measurement
-if ~TaskParameters.GUI.Photometry
+if ~isfield(TaskParameters.GUI, 'Photometry') || ~TaskParameters.GUI.Photometry
     disp('-> No photometry measurement. No photometry figure is  saved in the file server.')
     return
 end
