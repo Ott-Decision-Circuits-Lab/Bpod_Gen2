@@ -69,7 +69,7 @@ end
 
 FigurePath = fullfile(SessionFolder, [FigureName, '.png']);
 try
-    saveas(FigureHandle, FigurePath, 'png');
+    saveas(FigAnalysis, FigurePath, 'png');
     disp('-> Analysis figure is  successfully saved in the bpod_session folder in the file server.')
 catch
     warning('Analysis figure not saved to bpod_session folder!');
