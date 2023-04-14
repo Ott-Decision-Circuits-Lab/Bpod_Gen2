@@ -14,6 +14,7 @@ try
     FigureHandleNidaq1 = BpodSystem.GUIHandles.Nidaq1.fig;
     disp('-> Nidaq1 photometry figure handle found. Trying to look for nidaq2 as well.')
 catch
+    disp('-> Nidaq1 photometry figure handle found.')
 end
 
 FigureHandleNidaq2 = [];
@@ -21,6 +22,7 @@ try
     FigureHandleNidaq2 = BpodSystem.GUIHandles.Nidaq2.fig; % could be only red channel is on
     disp('-> Nidaq2 photometry figure handle found.')
 catch
+    disp('-> No Nidaq2 photometry figure handle found.')
 end 
 
 FigureHandles = [FigureHandleNidaq1, FigureHandleNidaq2];
@@ -90,7 +92,7 @@ for i = 1:length(FigureHandles)
     FigurePathAnalysis = fullfile(SessionFolder, [FigureName, strcat('_Nidaq', num2str(idx), '.png')]);
     try
         saveas(FigureHandles(i), FigurePathAnalysis, 'png');
-        disp(strcat('-> Nidaq',num2str(idx),' figure is  successfully saved in the bpod_graph folder in the file server.'))
+        disp(strcat('-> Nidaq',num2str(idx),' figure is  successfully saved in the bpod_session folder in the file server.'))
     catch
         warning('Photometry figure not saved to bpod_session folder!');
     end
