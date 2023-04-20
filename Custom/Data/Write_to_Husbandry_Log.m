@@ -36,7 +36,7 @@ catch
 end
 
 hubby_info.cage_number = -1;
-hubby_info.license = "TVA 0011/22";
+hubby_info.license = "G 0011/22";
 
 protocol_name = BpodSystem.GUIData.ProtocolName;
 
