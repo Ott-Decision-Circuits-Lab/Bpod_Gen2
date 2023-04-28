@@ -67,7 +67,7 @@ if ~isfolder(SessionFolder)
     mkdir(SessionFolder);
 end
 
-FigurePath = fullfile(SessionFolder, [FigureName, '.png']);
+FigurePath = fullfile(SessionFolder, [FigureName, '_Analysis.png']);
 try
     saveas(FigAnalysis, FigurePath, 'png');
     disp('-> Analysis figure is  successfully saved in the bpod_session folder in the file server.')
