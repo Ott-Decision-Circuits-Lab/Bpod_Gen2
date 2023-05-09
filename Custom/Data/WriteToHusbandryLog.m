@@ -46,8 +46,10 @@ try
     hubby_info.cage_number = -1;
     hubby_info.license = "G0011/22";
     
-    ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
-    
+    if TaskParameters.GUI.PharmacologyOn
+        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName, " ", drugInfo(1), " ", drugInfo(2));
+    else
+        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
 
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
