@@ -184,6 +184,16 @@ switch Opstring
         disp('#---------------------------------------------------#');
         disp('#           Saving data before exiting              #');
         disp('#---------------------------------------------------#');
+        %-----------Common scripts across protocols------------------%
+        % These do not require try blocks, because they are implemented
+        % on the Bpod level
+        SaveSessionDataToFileServer();
+        SaveSessionFigureToFileServer();
+        SaveAnalysisFigureToFileServer();
+        SavePhotometryFiguresToFileServer();
+        WriteSessionDataInfoToExperimentTable();
+        WriteToHusbandryLog();
+        
         %-------------Protocol-specific scripts----------------------%
         % These require try blocks, because they may not be implemented
         % in a given protocol
@@ -196,16 +206,6 @@ switch Opstring
         catch
             warning('Error: Custom data and param csv file not saved to server.');
         end
-
-        %-----------Common scripts across protocols------------------%
-        % These do not require try blocks, because they are implemented
-        % on the Bpod level
-        SaveSessionDataToFileServer();
-        SaveSessionFigureToFileServer();
-        SaveAnalysisFigureToFileServer();
-        SavePhotometryFiguresToFileServer();
-        WriteSessionDataInfoToExperimentTable();
-        WriteToHusbandryLog();
         %------------------------------------------------------------%
         disp('#---------------------------------------------------#');
         
