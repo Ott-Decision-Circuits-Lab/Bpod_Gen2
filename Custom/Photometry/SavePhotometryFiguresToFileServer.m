@@ -3,7 +3,7 @@ global BpodSystem
 global TaskParameters
 
 %% check if there is photometry measurement
-if exist(TaskParameters, 'var') == 0 || isempty(TaskParameters)
+if isempty(TaskParameters)
     disp('-> No TaskParameters found. No photometry figure is  saved in the file server.')
     return
 end
