@@ -187,6 +187,7 @@ switch Opstring
         %-----------Common scripts across protocols------------------%
         % These do not require try blocks, because they are implemented
         % on the Bpod level
+        WriteSessionMetaToBpodSessionData();
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
         SaveAnalysisFigureToFileServer();
