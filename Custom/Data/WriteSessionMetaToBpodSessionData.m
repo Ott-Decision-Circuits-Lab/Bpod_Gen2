@@ -23,7 +23,7 @@ Default = 'Proceed';
 
 Answer = questdlg(Guideline, BoxTitle, Option1, Option2, Default);
 
-if Answer == Option2 || isempty(Answer)
+if string(Answer) ~= Option1
     return
 end
 
@@ -143,6 +143,4 @@ if isfield(TaskParameters.GUI, 'PharmacologyOn') && TaskParameters.GUI.Pharmacol
     BpodSystem.Data.Custom.SessionMeta.AdministrationRoute = cell2mat(Answer(4));
 
 end
-
-BpodSystem.Data.Custom.General = BpodSystem.Info;
 end % end function
