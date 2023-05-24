@@ -9,7 +9,7 @@ Date: October 12, 2022
 
 global BpodSystem
 global TaskParameters
-
+try
 if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
 
     try
@@ -82,4 +82,7 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
     close(conn)
     disp('-> Ephys data written to database.')
 end % If Ephys
+catch
+    disp('No EphysSession checkbox found in GUI.')
+end % end catch
 end
