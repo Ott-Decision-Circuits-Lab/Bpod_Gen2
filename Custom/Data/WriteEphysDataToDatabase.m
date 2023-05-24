@@ -48,10 +48,8 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
             ephys_info.rat_id = -2;
         end
         
-        
-        
         protocol = BpodSystem.GUIData.ProtocolName;
-
+        
         if protocol == 'DiscriminationConfidence'
             if TaskParameters.GUI.FeedbackDelaySelection == 1  % reward-bias task
                ephys_info.task = "reward-bias";
@@ -59,7 +57,11 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
                ephys_info.task = "time-investment";
             end
         elseif protocol == 'TwoArmBanditVariant'
-            ephys_info.task = 'matching';
+            if TaskParameters.GUIMeta.RiskType.String{TaskParameters.GUI.RiskType} == 'BlockFixHolding'
+                ephys_info.task = 'matching';
+            elseif TaskParameters.GUIMeta.RiskType.String{TaskParameters.GUI.RiskType} == 'Cued'
+                ephys_info.task = 'cued_risk';
+            end
         end
 
         ephys_info.results_file_path = string(strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\ephys\'));
