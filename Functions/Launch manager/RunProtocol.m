@@ -194,6 +194,7 @@ switch Opstring
         SavePhotometryFiguresToFileServer();
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
+        WriteEphysDataToDatabase();
         
         %-------------Protocol-specific scripts----------------------%
         % These require try blocks, because they may not be implemented

@@ -93,7 +93,7 @@ end
 try
     sqlwrite(conn, tablename, exp_info_table)
 catch
-    warning('Insuccessful writing on bpod_experiment.')
+    warning('Unable to write to bpod_experiment table.')
     close(conn)
     return
 end
