@@ -188,6 +188,7 @@ switch Opstring
         % These do not require try blocks, because they are implemented
         % on the Bpod level
         WriteSessionMetaToBpodSessionData();
+        SaveBpodSessionData();
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
         SaveAnalysisFigureToFileServer();
