@@ -6,50 +6,65 @@ function WriteSessionMetaToBpodSessionData
 global BpodSystem
 global TaskParameters
 
-if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
-    disp('-> Not an experimental session. No post-session questionaire is needed.')
+try
+    if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
+        disp('-> Not an experimental session. No post-session questionaire is needed.')
+        return
+    end
+catch
+    disp('Error: Logic check. No SessionMeta will be written.')
     return
 end
 
 %% guideline
-Guideline = ['You have closed a session and are invited to insert the ', ...
-             'corresponding session metadata, including the behaviour part. ',...
-             'You may leave any field empty.'];
-
-BoxTitle = 'Guideline';
-Option1= 'Proceed';
-Option2 = 'Skip';
-Default = 'Proceed';
-
-Answer = questdlg(Guideline, BoxTitle, Option1, Option2, Default);
-
-if string(Answer) ~= Option1
+try
+    Guideline = ['You have closed a session and are invited to insert the ', ...
+                 'corresponding session metadata, including the behaviour part. ',...
+                 'You may leave any field empty.'];
+    
+    BoxTitle = 'Guideline';
+    Option1= 'Proceed';
+    Option2 = 'Skip';
+    Default = 'Proceed';
+    
+    Answer = questdlg(Guideline, BoxTitle, Option1, Option2, Default);
+    
+    if string(Answer) ~= string(Option1)
+        return
+    end
+catch
+    disp('Error: Metadata Guideline dialogue. No SessionMeta will be written.')
     return
 end
 
 %% behavioural session
-BehaviouralQuestions = {'All\bf behavioural\rm hardwares functional (t/f): ',...
-                        'Any particular remarks: ',...
-                        'Cage number?'};
-
-BoxTitle = 'Behavioural';
-Dims = [1 50; 1 50; 1 20];
-DefaultInput = {'t', '', '-1'};
-opts.Interpreter = 'tex';
-
-Answer = inputdlg(BehaviouralQuestions, BoxTitle, Dims, DefaultInput, opts);
-
-if isempty(Answer)
-    Answer = DefaultInput;
+try
+    BehaviouralQuestions = {'All\bf behavioural\rm hardwares functional (t/f): ',...
+                            'Any particular remarks: ',...
+                            'Cage number?'};
+    
+    BoxTitle = 'Behavioural';
+    Dims = [1 50; 1 50; 1 20];
+    DefaultInput = {'t', '', '-1'};
+    opts.Interpreter = 'tex';
+    
+    Answer = inputdlg(BehaviouralQuestions, BoxTitle, Dims, DefaultInput, opts);
+    
+    if isempty(Answer)
+        Answer = DefaultInput;
+    end
+    
+    BpodSystem.Data.Custom.SessionMeta.BehaviouralValidation = false;
+    if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
+        BpodSystem.Data.Custom.SessionMeta.BehaviouralValidation = true;
+    end
+    
+    BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks = cell2mat(Answer(2));
+    BpodSystem.Data.Custom.SessionMeta.CageNumber = cell2mat(Answer(3));
+    disp('-> Writing behavioural metadata is successful')
+catch
+    disp('Error: Behavioural Metadata. No behavioural SessionMeta will be written.')
 end
-
-BpodSystem.Data.Custom.SessionMeta.BehaviouralValid = false;
-if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-    BpodSystem.Data.Custom.SessionMeta.BehaviouralValid = true;
-end
-
-BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks = cell2mat(Answer(2));
-BpodSystem.Data.Custom.SessionMeta.CageNumber = cell2mat(Answer(3));
 
 %% photometry-related meta
 if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
@@ -73,9 +88,9 @@ if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
         Answer = DefaultInput;
     end
     
-    BpodSystem.Data.Custom.SessionMeta.PhotometryValid = false;
+    BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = false;
     if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-        BpodSystem.Data.Custom.SessionMeta.PhotometryValid = true;
+        BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = true;
     end
     
     BpodSystem.Data.Custom.SessionMeta.PhotometryRemarks = cell2mat(Answer(2));
@@ -88,6 +103,8 @@ if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
     BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmp = cell2mat(Answer(7));
     
     BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(8));
+
+    disp('-> Writing photometry metadata is successful')
 end
 
 %% Ephys-related meta
@@ -108,15 +125,16 @@ if isfield(TaskParameters.GUI, 'EphysSession') && TaskParameters.GUI.EphysSessio
         Answer = DefaultInput;
     end
     
-    BpodSystem.Data.Custom.SessionMeta.EphysValid = false;
+    BpodSystem.Data.Custom.SessionMeta.EphysValidation = false;
     if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-        BpodSystem.Data.Custom.SessionMeta.EphysValid = true;
+        BpodSystem.Data.Custom.SessionMeta.EphysValidation = true;
     end
     
     BpodSystem.Data.Custom.SessionMeta.EphysRemarks = cell2mat(Answer(2));
     BpodSystem.Data.Custom.SessionMeta.EphysBrainArea = cell2mat(Answer(3));
     BpodSystem.Data.Custom.SessionMeta.EphysProbe = cell2mat(Answer(4));
 
+    disp('-> Writing ephys metadata is successful')
 end
 
 %% Pharm-related meta
@@ -141,6 +159,9 @@ if isfield(TaskParameters.GUI, 'PharmacologyOn') && TaskParameters.GUI.Pharmacol
     BpodSystem.Data.Custom.SessionMeta.AdministratedDrug = cell2mat(Answer(2));
     BpodSystem.Data.Custom.SessionMeta.AdministratedDosage = cell2mat(Answer(3));
     BpodSystem.Data.Custom.SessionMeta.AdministrationRoute = cell2mat(Answer(4));
-
+    
+    disp('-> Writing pharmacology metadata is successful')
 end
+
+
 end % end function
