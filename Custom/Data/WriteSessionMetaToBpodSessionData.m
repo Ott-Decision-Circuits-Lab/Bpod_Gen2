@@ -108,33 +108,37 @@ if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
 end
 
 %% Ephys-related meta
-if isfield(TaskParameters.GUI, 'EphysSession') && TaskParameters.GUI.EphysSession
-    EphysQuestions = {'All\bf ephys\rm setups functional (t/f)? ',...
-                      'Any particular remarks: ',...
-                      'Measured brain area: ',...
-                      'Probe(s) type: '};
+try
+    if isfield(TaskParameters.GUI, 'EphysSession') && TaskParameters.GUI.EphysSession
+        EphysQuestions = {'All\bf ephys\rm setups functional (t/f)? ',...
+                          'Any particular remarks: ',...
+                          'Measured brain area: ',...
+                          'Probe(s) type: '};
+        
+        BoxTitle = 'Electrophysiology';
+        Dims = [1 50; 1 50; 1 50; 1 50];
+        DefaultInput = {'t', '', '', 'Neuropixels 1.0'};
+        opts.Interpreter = 'tex';
     
-    BoxTitle = 'Electrophysiology';
-    Dims = [1 50; 1 50; 1 50; 1 50];
-    DefaultInput = {'t', '', '', 'Neuropixels 1.0'};
-    opts.Interpreter = 'tex';
-
-    Answer = inputdlg(EphysQuestions, BoxTitle, Dims, DefaultInput, opts);
+        Answer = inputdlg(EphysQuestions, BoxTitle, Dims, DefaultInput, opts);
+        
+        if isempty(Answer)
+            Answer = DefaultInput;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.EphysValidation = false;
+        if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
+            BpodSystem.Data.Custom.SessionMeta.EphysValidation = true;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.EphysRemarks = cell2mat(Answer(2));
+        BpodSystem.Data.Custom.SessionMeta.EphysBrainArea = cell2mat(Answer(3));
+        BpodSystem.Data.Custom.SessionMeta.EphysProbe = cell2mat(Answer(4));
     
-    if isempty(Answer)
-        Answer = DefaultInput;
+        disp('-> Writing ephys metadata is successful')
     end
-    
-    BpodSystem.Data.Custom.SessionMeta.EphysValidation = false;
-    if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-        BpodSystem.Data.Custom.SessionMeta.EphysValidation = true;
-    end
-    
-    BpodSystem.Data.Custom.SessionMeta.EphysRemarks = cell2mat(Answer(2));
-    BpodSystem.Data.Custom.SessionMeta.EphysBrainArea = cell2mat(Answer(3));
-    BpodSystem.Data.Custom.SessionMeta.EphysProbe = cell2mat(Answer(4));
-
-    disp('-> Writing ephys metadata is successful')
+catch
+    disp('Error: Ephys Metadata. No Ephys SessionMeta will be written.')
 end
 
 %% Pharm-related meta
