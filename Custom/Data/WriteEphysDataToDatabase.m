@@ -66,7 +66,7 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
         
         ephys_info.brain_area = BpodSystem.Data.Custom.SessionMeta.EphysBrainArea;
         ephys_info.probe_type = BpodSystem.Data.Custom.SessionMeta.EphysProbe;
-        ephys_info.remarks = BpodSystem.Data.Custom.SessionMeta.EphysRemarks;
+        ephys_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.EphysRemarks);
 
         ephys_info.results_file_path = string(strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\ephys\'));
 
