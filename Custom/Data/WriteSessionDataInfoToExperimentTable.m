@@ -48,7 +48,7 @@ catch
 end
 
 try
-    exp_info.experiment_id = string(strcat(name, ext));
+    exp_info.experiment_id = name;
     session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
     exp_info.session_start_time = datestr(session_start);
     
@@ -83,8 +83,11 @@ try
     metadata_path = string(strcat(name, "_session_metadata.tsv"));
     exp_info.metadata_file_path = metadata_path;
     exp_info.peripherals_validation = BpodSystem.Data.Custom.SessionMeta.BehaviouralValidation;
-    exp_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks);
-
+    
+    if ~isempty(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks)
+        exp_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks);
+    end
+    
     exp_info_table = struct2table(exp_info);
 catch
     warning('Insufficient experiment info for creating table.')
