@@ -44,7 +44,7 @@ try
     end
     
     hubby_info.cage_number = str2num(BpodSystem.Data.Custom.SessionMeta.CageNumber);
-    if isempty(hubby_info.cage_numer)
+    if isempty(hubby_info.cage_number)
         hubby_info.cage_numer = -1;
     end
     hubby_info.license = "G0011/22";
