@@ -48,7 +48,7 @@ catch
 end
 
 try
-    exp_info.experiment_id = name;
+    exp_info.experiment_id = string(name);
     session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
     exp_info.session_start_time = datestr(session_start);
     
