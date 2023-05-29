@@ -10,7 +10,7 @@ Date: October 12, 2022
 global BpodSystem
 global TaskParameters
 
-if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
+if ~isempty(TaskParameters) && sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
 
     try
         conn = ConnectToSQL();
