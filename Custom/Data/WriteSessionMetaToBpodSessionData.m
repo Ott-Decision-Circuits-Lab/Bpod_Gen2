@@ -67,44 +67,48 @@ catch
 end
 
 %% photometry-related meta
-if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
-    PhotometryQuestions = {'All\bf photometry\rm setups functional (t/f)? ',...
-                           'Any particular remarks: ',...
-                           'Measured brain area: ',...
-                           'Sensor on green channel: ' ...
-                           'Pre-amplified voltage (V) on the green channel: ',...
-                           'Sensor on red channel: ',...
-                           'Pre-amplified voltage (V) on the red channel: ',...
-                           'Patch cable ID: '};
-
-    BoxTitle = 'Photometry';
-    Dims = [1 50; 1 50; 1 20; 1 20; 1 50; 1 20; 1 50; 1 20];
-    DefaultInput = {'t', '', '', '', '', 'tdTomato', '', 'T20230420'};
-    opts.Interpreter = 'tex';
-
-    Answer = inputdlg(PhotometryQuestions, BoxTitle, Dims, DefaultInput, opts);
+try
+    if isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
+        PhotometryQuestions = {'All\bf photometry\rm setups functional (t/f)? ',...
+                               'Any particular remarks: ',...
+                               'Measured brain area: ',...
+                               'Sensor on green channel: ' ...
+                               'Pre-amplified voltage (V) on the green channel: ',...
+                               'Sensor on red channel: ',...
+                               'Pre-amplified voltage (V) on the red channel: ',...
+                               'Patch cable ID: '};
     
-    if isempty(Answer)
-        Answer = DefaultInput;
+        BoxTitle = 'Photometry';
+        Dims = [1 50; 1 50; 1 20; 1 20; 1 50; 1 20; 1 50; 1 20];
+        DefaultInput = {'t', '', '', '', '', 'tdTomato', '', 'T20230420'};
+        opts.Interpreter = 'tex';
+    
+        Answer = inputdlg(PhotometryQuestions, BoxTitle, Dims, DefaultInput, opts);
+        
+        if isempty(Answer)
+            Answer = DefaultInput;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = false;
+        if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
+            BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = true;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRemarks = cell2mat(Answer(2));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryBrainArea = cell2mat(Answer(3));
+        
+        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenSensor = cell2mat(Answer(4));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmp = cell2mat(Answer(5));
+        
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRedSensor = cell2mat(Answer(6));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmp = cell2mat(Answer(7));
+        
+        BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(8));
+    
+        disp('-> Writing photometry metadata is successful')
     end
-    
-    BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = false;
-    if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-        BpodSystem.Data.Custom.SessionMeta.PhotometryValidation = true;
-    end
-    
-    BpodSystem.Data.Custom.SessionMeta.PhotometryRemarks = cell2mat(Answer(2));
-    BpodSystem.Data.Custom.SessionMeta.PhotometryBrainArea = cell2mat(Answer(3));
-    
-    BpodSystem.Data.Custom.SessionMeta.PhotometryGreenSensor = cell2mat(Answer(4));
-    BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmp = cell2mat(Answer(5));
-    
-    BpodSystem.Data.Custom.SessionMeta.PhotometryRedSensor = cell2mat(Answer(6));
-    BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmp = cell2mat(Answer(7));
-    
-    BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(8));
-
-    disp('-> Writing photometry metadata is successful')
+catch
+    disp('Error: Photometry Metadata. No Photometry SessionMeta will be written.')
 end
 
 %% Ephys-related meta
