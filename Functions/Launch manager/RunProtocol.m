@@ -195,6 +195,7 @@ switch Opstring
         SavePhotometryFiguresToFileServer();
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
+        WritePhotometryDataToDatabase();
         WriteEphysDataToDatabase();
         
         %-------------Protocol-specific scripts----------------------%

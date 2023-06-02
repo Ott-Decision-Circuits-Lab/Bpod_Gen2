@@ -170,6 +170,4 @@ if isfield(TaskParameters.GUI, 'PharmacologyOn') && TaskParameters.GUI.Pharmacol
     
     disp('-> Writing pharmacology metadata is successful')
 end
-
-
 end % end function
