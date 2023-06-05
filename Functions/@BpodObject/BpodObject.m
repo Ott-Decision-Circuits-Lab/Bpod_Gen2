@@ -203,7 +203,7 @@ classdef BpodObject < handle
             try
                 SoundCalibrationFilePath = fullfile(obj.Path.LocalDir, 'Calibration Files', 'SoundCalibration.mat');
                 load(SoundCalibrationFilePath);
-                obj.CalibrationTables.SoundCal = SoundCal;
+                obj.CalibrationTables.SoundCal = SoundCal; % Requires the loaded .mat file to contain a struct named SoundCal
             catch
                 obj.CalibrationTables.SoundCal = [];
             end
