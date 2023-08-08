@@ -49,6 +49,9 @@ end
 
 try
     exp_info.experiment_id = string(name);
+    session_datetime = split(name, '_');
+    session_datetime = string(strcat(session_datetime(3),'_',session_datetime(4)));
+
     session_start = strcat(Info.SessionDate, '-', Info.SessionStartTime_UTC);
     exp_info.session_start_time = datestr(session_start);
     
@@ -76,7 +79,7 @@ try
     session_len = last_trial_end - first_trial_start;
     exp_info.session_length = string(session_len); % (s)
     exp_info.raw_data_file_path = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', num2str(exp_info.rat_id),...
-                                  '\bpod_session\', Info.SessionDate, '_', Info.SessionStartTime_UTC);
+                                  '\bpod_session\', session_datetime);
     
     trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));
     exp_info.preprocessed_trial_data_file_path = trial_path;
