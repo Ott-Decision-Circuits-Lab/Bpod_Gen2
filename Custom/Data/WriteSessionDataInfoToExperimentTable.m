@@ -85,6 +85,11 @@ try
     exp_info.preprocessed_trial_data_file_path = trial_path;
     metadata_path = string(strcat(name, "_session_metadata.tsv"));
     exp_info.metadata_file_path = metadata_path;
+    exp_info.peripherals_validation = string(BpodSystem.Data.Custom.SessionMeta.BehaviouralValidation);
+    
+    if ~isempty(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks)
+        exp_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks);
+    end
     
     exp_info_table = struct2table(exp_info);
 catch
