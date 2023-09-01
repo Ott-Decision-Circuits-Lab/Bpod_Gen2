@@ -73,16 +73,16 @@ try
                                'Any particular remarks: ',...
                                'Measured brain area: ',...
                                'Sensor on green channel: ' ...
-                               'Pre-amplified voltage (V) on the green channel: ',...
+                               'Amplification on the green channel: ',...
                                'Sensor on red channel: ',...
-                               'Pre-amplified voltage (V) on the red channel: ',...
+                               'Amplification on the red channel: ',...
                                'Patch cable ID: '};
     
         BoxTitle = 'Photometry';
         Dims = [1 50; 1 50; 1 20; 1 20; 1 50; 1 20; 1 50; 1 20];
-        DefaultInput = {'t', '', '', '', '', 'tdTomato', '', 'T20230420'};
+        DefaultInput = {'t', '', '', '', '1', 'tdTomato', '1', 'D20230602'};
         opts.Interpreter = 'tex';
-    
+        
         Answer = inputdlg(PhotometryQuestions, BoxTitle, Dims, DefaultInput, opts);
         
         if isempty(Answer)
@@ -98,10 +98,10 @@ try
         BpodSystem.Data.Custom.SessionMeta.PhotometryBrainArea = cell2mat(Answer(3));
         
         BpodSystem.Data.Custom.SessionMeta.PhotometryGreenSensor = cell2mat(Answer(4));
-        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmp = cell2mat(Answer(5));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmplification = cell2mat(Answer(5));
         
         BpodSystem.Data.Custom.SessionMeta.PhotometryRedSensor = cell2mat(Answer(6));
-        BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmp = cell2mat(Answer(7));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmplification = cell2mat(Answer(7));
         
         BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(8));
     
