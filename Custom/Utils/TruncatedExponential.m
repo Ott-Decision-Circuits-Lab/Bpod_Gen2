@@ -14,9 +14,11 @@ min_value = varargin{1};
 max_value = varargin{2};
 tau = varargin{3};
 if length(varargin)>3
-    m = varargin{4}(1);n = varargin{4}(2);
+    m = varargin{4}(1);
+    n = varargin{4}(2);
 else
-    m=1;n=1;
+    m = 1;
+    n = 1;
 end
 
 % Initialize to a large value
@@ -30,8 +32,6 @@ end
 %add the offset
 Exp = Exp + min_value;
 
-
 %reshape
 Exp = reshape(Exp,m,n);
-
 end

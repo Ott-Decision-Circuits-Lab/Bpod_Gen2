@@ -55,7 +55,9 @@ try
     
     photometry_info.patch_cable_id = string(SessionMeta.PhotometryPatchCableID);
     photometry_info.peripherals_validation = string(SessionMeta.PhotometryValidation);
-    photometry_info.results_file_path = string(strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
+    
+    DataFolderPath = OttLabDataServerFolderPath();
+    photometry_info.results_file_path = string(strcat(DataFolderPath, Info.Subject, '\bpod_session\',...
                                                       name(end-14:end), '\', name, '_Photometry'));
 
     if ~isempty(SessionMeta.PhotometryRemarks)

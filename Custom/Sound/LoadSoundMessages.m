@@ -24,14 +24,12 @@ analogPortIndex = find(strcmp(BpodSystem.Modules.Name, 'WavePlayer1'));
 if isempty(analogPortIndex)
     error('Error: Bpod WavePlayer module not found. If you just plugged it in, please restart Bpod.')
 end
+
 playMessages = {};
 for i=1:size(SoundChannels,2)
     i
     playMessages{i} = ['P', SoundChannels(i), i-1];
 end
+
 LoadSerialMessages('WavePlayer1', playMessages);  
-
-
-
-
 end %LoadSoundMessages

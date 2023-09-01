@@ -78,7 +78,9 @@ try
     last_trial_end = BpodSystem.Data.TrialEndTimestamp(end);
     session_len = last_trial_end - first_trial_start;
     exp_info.session_length = string(session_len); % (s)
-    exp_info.raw_data_file_path = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', num2str(exp_info.rat_id),...
+
+    DataFolderPath = OttLabDataServerFolderPath();
+    exp_info.raw_data_file_path = strcat(DataFolderPath, num2str(exp_info.rat_id),...
                                   '\bpod_session\', session_datetime);
     
     trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));

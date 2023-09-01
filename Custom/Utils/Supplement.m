@@ -137,7 +137,7 @@ else
     % -----------------------------------------------------------------%
     % Add breakpoint here if you want to test before writing to database
     % -----------------------------------------------------------------%
-    tablename="husbandry_log";
+    tablename = "husbandry_log";
     sqlwrite(conn, tablename, SupplementTable);
     disp(num2str(height(SupplementTable)) + " entries made, check database for consistency.")
 end

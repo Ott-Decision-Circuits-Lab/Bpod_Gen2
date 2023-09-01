@@ -1,26 +1,26 @@
 function [NidaqDemod, NidaqRaw]=Online_NidaqDemod(rawData,refData,modFreq,modAmp,StateToZero)
 global BpodSystem TaskParameters
 
-decimateFactor=TaskParameters.GUI.DecimateFactor;
-duration=TaskParameters.GUI.NidaqDuration;
-sampleRate=TaskParameters.GUI.NidaqSamplingRate;
-baseline_begin=TaskParameters.GUI.BaselineBegin;
-baseline_end=TaskParameters.GUI.BaselineEnd;
-lowCutoff=15;
-pad=1;
+decimateFactor = TaskParameters.GUI.DecimateFactor;
+duration = TaskParameters.GUI.NidaqDuration;
+sampleRate = TaskParameters.GUI.NidaqSamplingRate;
+baseline_begin = TaskParameters.GUI.BaselineBegin;
+baseline_end = TaskParameters.GUI.BaselineEnd;
+lowCutoff = 15;
+pad = 1;
 if TaskParameters.GUI.Modulation
-%% Prepare reference data and generates 90deg shifted ref data
-refData             = refData(1:length(rawData),1);   % adjust length of refData to rawData
-refData             = refData-mean(refData);          % suppress DC offset
-samplesPerPeriod    = (1/modFreq)/(1/sampleRate);
-quarterPeriod       = round(samplesPerPeriod/4);
-refData90           = circshift(refData,[1 quarterPeriod]);
+    %% Prepare reference data and generates 90deg shifted ref data
+    refData             = refData(1:length(rawData),1);   % adjust length of refData to rawData
+    refData             = refData-mean(refData);          % suppress DC offset
+    samplesPerPeriod    = (1/modFreq)/(1/sampleRate);
+    quarterPeriod       = round(samplesPerPeriod/4);
+    refData90           = circshift(refData,[1 quarterPeriod]);
+    
+    %% Quadrature decoding and filtering
+    processedData_0     = rawData .* refData;
+    processedData_90    = rawData .* refData90;
 
-%% Quadrature decoding and filtering
-processedData_0     = rawData .* refData;
-processedData_90    = rawData .* refData90;
-
-%% Filter
+    %% Filter
     lowCutoff = lowCutoff/(sampleRate/2); % normalized CutOff by half SampRate (see doc)
     [b, a] = butter(5, lowCutoff, 'low'); 
     % pad the data to suppress windows effect upon filtering
@@ -36,51 +36,53 @@ processedData_90    = rawData .* refData90;
         processedData_90    = filtfilt(b,a,processedData_90); 
     end
     
-demodData = (processedData_0 .^2 + processedData_90 .^2) .^(1/2);
+    demodData = (processedData_0 .^2 + processedData_90 .^2) .^(1/2);
 
-%% Correct for amplitude of reference
-demodData=demodData*2/modAmp;
+    %% Correct for amplitude of reference
+    demodData = demodData*2/modAmp;
 else
-    demodData=rawData;
+    demodData = rawData;
 end
+
 %% Expeced Data set
-SampRate=sampleRate/decimateFactor;
-ExpectedSize=duration*SampRate;
-Data=NaN(ExpectedSize,1);
-TempData=decimate(demodData,decimateFactor);
-Data(1:length(TempData))=TempData;
+SampRate = sampleRate/decimateFactor;
+ExpectedSize = duration*SampRate;
+Data = NaN(ExpectedSize,1);
+TempData = decimate(demodData,decimateFactor);
+Data(1:length(TempData)) = TempData;
 
 %% DF/F calculation
-Fbaseline=mean(Data(baseline_begin*SampRate:baseline_end*SampRate));
-DFF=100*(Data-Fbaseline)/Fbaseline;
+Fbaseline = mean(Data(baseline_begin*SampRate:baseline_end*SampRate));
+DFF = 100*(Data-Fbaseline)/Fbaseline;
 
 %% Time
-Time=linspace(0,duration,ExpectedSize);
+Time = linspace(0,duration,ExpectedSize);
 statenames = fieldnames(BpodSystem.Data.RawEvents.Trial{1,end}.States);
-stateidx=find(cellfun(@(x,a,n) strncmp(x,a,n),statenames,repmat({StateToZero},length(statenames),1),num2cell(length(StateToZero)*ones(length(statenames),1))));
-for i =1:length(stateidx)
+stateidx = find(cellfun(@(x,a,n) strncmp(x,a,n),statenames,repmat({StateToZero},length(statenames),1),num2cell(length(StateToZero)*ones(length(statenames),1))));
+for i = 1:length(stateidx)
     times(i) = BpodSystem.Data.RawEvents.Trial{1,end}.States.(statenames{stateidx(i)})(1,1);
 end
+
 time0_idx = find(~isnan(times));
 if length(time0_idx)>1
     warning('State to zero not unique!')
 end
-TimeToZero=times(time0_idx(1));
+TimeToZero = times(time0_idx(1));
 % TimeToZero=BpodSystem.Data.RawEvents.Trial{1,end}.States.(StateToZero)(1,1);
-Time=Time'-TimeToZero;
+Time = Time' - TimeToZero;
 
 %% Raw Data
-ExpectedSizeRaw=duration*sampleRate;
-DataRaw=NaN(ExpectedSizeRaw,1);
+ExpectedSizeRaw = duration*sampleRate;
+DataRaw = NaN(ExpectedSizeRaw,1);
 DataRaw(1:length(rawData))=rawData;
 
-TimeRaw=linspace(0,duration,ExpectedSizeRaw);
-TimeRaw=TimeRaw'-TimeToZero;
+TimeRaw = linspace(0,duration,ExpectedSizeRaw);
+TimeRaw = TimeRaw' - TimeToZero;
 %% NewDataSet
-NidaqDemod(:,1)=Time;
-NidaqDemod(:,2)=Data;
-NidaqDemod(:,3)=DFF;
+NidaqDemod(:,1) = Time;
+NidaqDemod(:,2) = Data;
+NidaqDemod(:,3) = DFF;
 
-NidaqRaw(:,1)=TimeRaw;
-NidaqRaw(:,2)=DataRaw;
+NidaqRaw(:,1) = TimeRaw;
+NidaqRaw(:,2) = DataRaw;
 end

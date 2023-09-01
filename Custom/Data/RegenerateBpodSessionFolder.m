@@ -1,4 +1,4 @@
-data_path = '\\ottlabfs.bccn-berlin.pri\ottlab\data\';
+data_path = OttLabDataServerFolderPath();
 data_path_dir = dir(data_path);
 
 for idx = 1: length(data_path_dir)

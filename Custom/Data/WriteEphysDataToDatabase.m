@@ -76,8 +76,9 @@ if ~isempty(TaskParameters) && sum(strcmp(fieldnames(TaskParameters.GUI), 'Ephys
         if ~isempty(BpodSystem.Data.Custom.SessionMeta.EphysRemarks)
             ephys_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.EphysRemarks);
         end
-
-        ephys_info.results_file_path = string(strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\ephys\'));
+        
+        DataFolderPath = OttLabDataServerFolderPath();
+        ephys_info.results_file_path = string(strcat(DataFolderPath, Info.Subject, '\ephys\'));
 
         ephys_info_table = struct2table(ephys_info);
     catch

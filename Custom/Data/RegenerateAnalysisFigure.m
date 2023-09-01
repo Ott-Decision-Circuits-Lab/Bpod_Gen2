@@ -1,4 +1,7 @@
-sessions_path = '\\ottlabfs.bccn-berlin.pri\ottlab\data\1\bpod_session';
+DataFolderPath = OttLabDataServerFolderPath();
+RatID = '1';
+ProtocolName = 'TwoArmBanditVariant';
+sessions_path = [DataFolderPath RatID '\bpod_session'];
 session_folders = ls(sessions_path);
 for session_idx = 1: height(session_folders)
     session_date = session_folders(session_idx, :);
@@ -8,7 +11,7 @@ for session_idx = 1: height(session_folders)
     
     data_folder = fullfile(sessions_path, session_date);
     files_in_data_folder = ls(data_folder);
-    target_data_name = strcat('1_TwoArmBanditVariant_', session_date, '.mat');
+    target_data_name = strcat(RatID, '_', ProtocolName, '_', session_date, '.mat');
     string_length = length(target_data_name);
     
     file_path = '';
@@ -26,7 +29,7 @@ for session_idx = 1: height(session_folders)
     FigurePathAnalysis = fullfile(data_folder, [target_data_name(1:end-4), '_Analysis.png']);
     saveas(FigHandle, FigurePathAnalysis, 'png');
 
-    sessions_path = '\\ottlabfs.bccn-berlin.pri\ottlab\data\1\bpod_graph';
+    sessions_path = [DataFolderPath RatID '\bpod_graph'];
     saveas(FigHandle, sessions_path, 'png');
 
 end
