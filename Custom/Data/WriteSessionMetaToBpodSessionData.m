@@ -72,15 +72,17 @@ try
         PhotometryQuestions = {'All\bf photometry\rm setups functional (t/f)? ',...
                                'Any particular remarks: ',...
                                'Measured brain area: ',...
-                               'Sensor on green channel: ' ...
+                               'Output power of LED1 (uW): ',...
+                               'Sensor on green channel: ',...
                                'Amplification on the green channel: ',...
+                               'Output power of LED2 (uW): ',...
                                'Sensor on red channel: ',...
                                'Amplification on the red channel: ',...
                                'Patch cable ID: '};
     
         BoxTitle = 'Photometry';
-        Dims = [1 50; 1 50; 1 20; 1 20; 1 50; 1 20; 1 50; 1 20];
-        DefaultInput = {'t', '', '', '', '1', 'tdTomato', '1', 'D20230602'};
+        Dims = [1 50; 1 50; 1 20; 1 20; 1 20; 1 20; 1 20; 1 20; 1 20; 1 20];
+        DefaultInput = {'t', '', '', '20', '', '1', '20', 'tdTomato', '1', 'D20230717'};
         opts.Interpreter = 'tex';
         
         Answer = inputdlg(PhotometryQuestions, BoxTitle, Dims, DefaultInput, opts);
@@ -97,13 +99,15 @@ try
         BpodSystem.Data.Custom.SessionMeta.PhotometryRemarks = cell2mat(Answer(2));
         BpodSystem.Data.Custom.SessionMeta.PhotometryBrainArea = cell2mat(Answer(3));
         
-        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenSensor = cell2mat(Answer(4));
-        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmplification = cell2mat(Answer(5));
+        BpodSystem.Data.Custom.SessionMeta.LED1Power = cell2mat(Answer(4));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenSensor = cell2mat(Answer(5));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryGreenAmplification = cell2mat(Answer(6));
         
-        BpodSystem.Data.Custom.SessionMeta.PhotometryRedSensor = cell2mat(Answer(6));
-        BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmplification = cell2mat(Answer(7));
+        BpodSystem.Data.Custom.SessionMeta.LED2Power = cell2mat(Answer(7));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRedSensor = cell2mat(Answer(8));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryRedAmplification = cell2mat(Answer(9));
         
-        BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(8));
+        BpodSystem.Data.Custom.SessionMeta.PhotometryPatchCableID = cell2mat(Answer(10));
     
         disp('-> Writing photometry metadata is successful')
     end

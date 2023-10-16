@@ -50,8 +50,12 @@ try
     
     photometry_info.brain_area = string(SessionMeta.PhotometryBrainArea);
 
-    photometry_info.photometry_info = [string(SessionMeta.PhotometryGreenSensor), "470", SessionMeta.PhotometryGreenAmplification;...
-                                       string(SessionMeta.PhotometryRedSensor), "555", SessionMeta.PhotometryRedAmplification];
+    photometry_info.led1_output_power = SessionMeta.LED1Power;
+    photometry_info.led2_output_power = SessionMeta.LED2Power;
+    photometry_info.green_sensor = SessionMeta.PhotometryGreenSensor;
+    photometry_info.green_amplification = SessionMeta.PhotometryGreenAmplification;
+    photometry_info.red_sensor = SessionMeta.PhotometryRedSensor;
+    photometry_info.red_amplification = SessionMeta.PhotometryRedAmplification;
     
     photometry_info.patch_cable_id = string(SessionMeta.PhotometryPatchCableID);
     photometry_info.peripherals_validation = string(SessionMeta.PhotometryValidation);
