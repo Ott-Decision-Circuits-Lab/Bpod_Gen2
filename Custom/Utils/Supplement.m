@@ -1,6 +1,7 @@
 % This script goes through the database and adds "supplement" to each day
 % where rats have consumed less than 9 mL. 
-% 
+% Eric Lonergan, 2022
+
 % Note: This script works by checking existing entries in the database. If
 % there are no entries on a particular day, the script ignores that day.
 % This means that if you are skipping training, the script will miss that
@@ -8,10 +9,10 @@
 
 % Database fields. Enter your data accordingly.
 
-rat_id = 12; % Must be run for each rat separately
+rat_id = 55; % Must be run for each rat separately
 water_scheduling = 'supplement'; % String to be added in water_scheduling column
 reported_by = 'Eric Lonergan'; % Caretaker
-cage_number = 6;
+cage_number = 9;
 license = 'G0011/22';
 min_water = 9000; % Define the minimum amount of water rats should consume in µL
 
@@ -36,6 +37,18 @@ elseif rat_id == 23
     time_of_supplement_string = '19:00:23';
 elseif rat_id == 24
     time_of_supplement_string = '19:00:24';
+elseif rat_id == 50
+    time_of_supplement_string = '19:00:50';
+elseif rat_id == 51
+    time_of_supplement_string = '19:00:51';
+elseif rat_id == 52
+    time_of_supplement_string = '19:00:52';
+elseif rat_id == 53
+    time_of_supplement_string = '19:00:53';
+elseif rat_id == 54
+    time_of_supplement_string = '19:00:54';
+elseif rat_id == 55
+    time_of_supplement_string = '19:00:55';
 end
 
 % Connect to the PostgreSQL database
