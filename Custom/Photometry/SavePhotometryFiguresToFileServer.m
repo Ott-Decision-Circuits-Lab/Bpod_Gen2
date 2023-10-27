@@ -103,5 +103,5 @@ for i = 1:length(FigureHandles)
         warning('Photometry figure not saved to bpod_session folder!');
     end
     
-    close(FigureHandles(i));
+%     close(FigureHandles(i));
 end
