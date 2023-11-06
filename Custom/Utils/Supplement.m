@@ -9,7 +9,7 @@
 
 % Database fields. Enter your data accordingly.
 
-rat_id = [50, 51, 52, 53]; % Must be run for each rat separately
+rat_id = [50, 51, 52, 53]; % Must be run for each cage separately
 water_scheduling = 'supplement'; % String to be added in water_scheduling column
 reported_by = 'Eric Lonergan'; % Caretaker
 cage_number = 9;
@@ -38,6 +38,8 @@ for i=1:length(rat_id)
         time_of_supplement_string = '19:00:23';
     elseif rat_id(i) == 24
         time_of_supplement_string = '19:00:24';
+    elseif rat_id(i) == 32
+        time_of_supplement_string = '19:00:32';
     elseif rat_id(i) == 50
         time_of_supplement_string = '19:00:50';
     elseif rat_id(i) == 51
