@@ -17,43 +17,12 @@ license = 'G0011/22';
 min_water = 9000; % Define the minimum amount of water rats should consume in µL
 
 for i=1:length(rat_id)
-    % Define a fixed time of supplementation for each rat
-    if rat_id(i) == 12
-        time_of_supplement_string = '18:00:00';
-    elseif rat_id(i) == 13
-        time_of_supplement_string = '19:00:00';
-    elseif rat_id(i) == 1
-        time_of_supplement_string = '19:00:01';
-    elseif rat_id(i) == 2
-        time_of_supplement_string = '19:00:02';
-    elseif rat_id(i) == 3
-        time_of_supplement_string = '19:00:03';
-    elseif rat_id(i) == 4
-        time_of_supplement_string = '19:00:04';
-    elseif rat_id(i) == 21
-        time_of_supplement_string = '19:00:21';
-    elseif rat_id(i) == 22
-        time_of_supplement_string = '19:00:22';
-    elseif rat_id(i) == 23
-        time_of_supplement_string = '19:00:23';
-    elseif rat_id(i) == 24
-        time_of_supplement_string = '19:00:24';
-    elseif rat_id(i) == 32
-        time_of_supplement_string = '19:00:32';
-    elseif rat_id(i) == 50
-        time_of_supplement_string = '19:00:50';
-    elseif rat_id(i) == 51
-        time_of_supplement_string = '19:00:51';
-    elseif rat_id(i) == 52
-        time_of_supplement_string = '19:00:52';
-    elseif rat_id(i) == 53
-        time_of_supplement_string = '19:00:53';
-    elseif rat_id(i) == 54
-        time_of_supplement_string = '19:00:54';
-    elseif rat_id(i) == 55
-        time_of_supplement_string = '19:00:55';
-    end
-    
+    % Define a fixed time of supplementation for each rat based on the rat_id
+    % time calculation is a fixed base time (here it's 7pm) + the rat's ID in seconds
+    base_time = datetime('19:00:00');
+    time_of_supplement = base_time + seconds(rat_id(i));
+    time_of_supplement_string = datestr(time_of_supplement, 'HH:MM:SS');
+        
     % Connect to the PostgreSQL database
     conn = ConnectToSQL();
     
