@@ -4,7 +4,7 @@ Setup for BpodHiFi to produce sounds.
 
 See also: https://sites.google.com/site/bpoddocumentation/user-guide/function-reference/bpodwaveplayer
 
-Based on greg@bccn-berlin.de 's SetupWavePlayer(fs)
+Based on gregory@bccn-berlin.de 's SetupWavePlayer(fs)
 
 Author: antonio@bccn-berlin.de 2023-01-10
 
@@ -44,4 +44,5 @@ Player.Port  % Prints the port to the Command Window
 Player.DigitalAttenuation_dB = -10;
 Player.SamplingRate = fs; %fs = 192000 % Use max (192kHz) supported sampling rate (fs = sampling freq)
 BpodSystem.Data.Custom.SessionMeta.HiFiModule = true;
+BpodSystem.Data.Custom.SessionMeta.PlayerType = "HiFi";
 end % SetupWavePlayer
