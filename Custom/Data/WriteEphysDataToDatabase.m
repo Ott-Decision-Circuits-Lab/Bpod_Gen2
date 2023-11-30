@@ -10,7 +10,7 @@ Date: October 12, 2022
 global BpodSystem
 global TaskParameters
 try
-if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
+if ~isempty(TaskParameters) && sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
 
     try
         conn = ConnectToSQL();
@@ -48,10 +48,8 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
             ephys_info.rat_id = -2;
         end
         
-        
-        
         protocol = BpodSystem.GUIData.ProtocolName;
-
+        
         if protocol == 'DiscriminationConfidence'
             if TaskParameters.GUI.FeedbackDelaySelection == 1  % reward-bias task
                ephys_info.task = "reward-bias";
@@ -59,10 +57,28 @@ if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParam
                ephys_info.task = "time-investment";
             end
         elseif protocol == 'TwoArmBanditVariant'
-            ephys_info.task = 'matching';
+            if TaskParameters.GUIMeta.RiskType.String{TaskParameters.GUI.RiskType} == 'BlockFixHolding'
+                ephys_info.task = 'matching';
+            elseif TaskParameters.GUIMeta.RiskType.String{TaskParameters.GUI.RiskType} == 'Cued'
+                ephys_info.task = 'cued_risk';
+            end
+        end
+        
+        
+        if ~isempty(BpodSystem.Data.Custom.SessionMeta.EphysBrainArea)
+            ephys_info.brain_area = BpodSystem.Data.Custom.SessionMeta.EphysBrainArea;
         end
 
-        ephys_info.results_file_path = string(strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\ephys\'));
+        if ~isempty(BpodSystem.Data.Custom.SessionMeta.EphysProbe)
+            ephys_info.probe_type = BpodSystem.Data.Custom.SessionMeta.EphysProbe;
+        end
+
+        if ~isempty(BpodSystem.Data.Custom.SessionMeta.EphysRemarks)
+            ephys_info.remarks = string(BpodSystem.Data.Custom.SessionMeta.EphysRemarks);
+        end
+        
+        DataFolderPath = OttLabDataServerFolderPath();
+        ephys_info.results_file_path = string(strcat(DataFolderPath, Info.Subject, '\ephys\'));
 
         ephys_info_table = struct2table(ephys_info);
     catch

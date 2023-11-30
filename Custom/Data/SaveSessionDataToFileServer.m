@@ -23,9 +23,9 @@ catch
 end
 
 TimestampStr = name(end-14:end);
+DataFolderPath = OttLabDataServerFolderPath();
 try
-    SessionFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
-                           TimestampStr);
+    SessionFolder = strcat(DataFolderPath, Info.Subject, '\bpod_session\', TimestampStr);
 catch
     warning('Not enough data info for path definition. Analysis figure not saved to server!');
     return

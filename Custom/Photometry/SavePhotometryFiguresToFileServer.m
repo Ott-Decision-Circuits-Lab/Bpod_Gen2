@@ -60,8 +60,9 @@ for i = 1:length(FigureHandles)
     end
     
     %% check or else create folders for saving in bpod_graph (duplicated copy for cross-session view)
+    DataFolderPath = OttLabDataServerFolderPath();
     try
-        FigureFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_graph\');
+        FigureFolder = strcat(DataFolderPath, Info.Subject, '\bpod_graph\');
     catch
         warning(strcat('Not enough data info for path definition. Nidaq figure ', num2str(i),' not saved to server!'));
         break
@@ -83,8 +84,7 @@ for i = 1:length(FigureHandles)
     %% check or else create folders for saving in bpod_session
     TimestampStr = FigureName(end-14:end);
     try
-        SessionFolder = strcat('\\ottlabfs.bccn-berlin.pri\ottlab\data\', Info.Subject, '\bpod_session\',...
-                               TimestampStr);
+        SessionFolder = strcat(DataFolderPath, Info.Subject, '\bpod_session\', TimestampStr);
     catch
         warning('Not enough data info for path definition. Analysis figure not saved to server!');
         return
@@ -103,5 +103,5 @@ for i = 1:length(FigureHandles)
         warning('Photometry figure not saved to bpod_session folder!');
     end
     
-    close(FigureHandles(i));
+%     close(FigureHandles(i));
 end

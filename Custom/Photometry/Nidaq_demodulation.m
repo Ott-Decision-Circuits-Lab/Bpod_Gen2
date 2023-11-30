@@ -1,10 +1,10 @@
-function demodData=Nidaq_demodulation(rawData,sampleRate,modFreq,lowCutoff)
+function demodData = Nidaq_demodulation(rawData, sampleRate, modFreq, lowCutoff)
 % Demodulate an AM-modulated input ('rawData') in quadrature given a
 % reference ('refData'). 'LowCutOff' is a corner frequency for 5-pole
 % butterworth lowpass filter.
 
 if nargin<5
-    lowCutoff=[];
+    lowCutoff = [];
 end
 
 %% Prepare reference data and generates 90deg shifted ref data
