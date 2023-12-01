@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 % A sample-wise attentuation envelope for pure frequency sweep waveforms can be calculated
 % with toneAtt = polyval(SoundCal(1,s).Coefficient,freqvec) where freqvec contains the instantaneous frequency at each sample.
 
-function SoundCal = SoundCalibration_Manual(FreqRange, nMeasurements, dbSPL_Target, nSpeakers)
+function SoundCal = SoundCalibration_Manual(FreqRange, FreqStep, dbSPL_Target, nSpeakers)
 
 global BpodSystem
 %% Resolve HiFi Module USB port
@@ -49,8 +49,8 @@ H.DigitalAttenuation_dB = -15;
 H.SamplingRate = 192000;
 H.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
-nTriesPerFrequency = 7;
-toneDuration = 5; % Seconds
+nTriesPerFrequency = 10;
+toneDuration = 3; % Seconds
 AcceptableDifference_dBSPL = 0.5;
 
 if (length(FreqRange) ~= 2) || (sum(FreqRange < 20) > 0) || (sum(FreqRange > 100000) > 0)
@@ -80,7 +80,8 @@ end
 
 MinFreq = FreqRange(1);
 MaxFreq = FreqRange(2);
-FrequencyVector =  logspace(log10(MinFreq),log10(MaxFreq),nMeasurements);
+FrequencyVector =  MinFreq:FreqStep:MaxFreq;
+nMeasurements = length(FrequencyVector);
 SpeakerNames = {'Left', 'Right'};
 for s = 1:nSpeakers
     ThisTable = zeros(nMeasurements, 2);
