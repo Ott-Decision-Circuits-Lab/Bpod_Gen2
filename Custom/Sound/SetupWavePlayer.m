@@ -65,4 +65,5 @@ Player.TriggerMode = 'Master';
 Player.OutputRange = '-5V:5V';
 Player.TriggerProfileEnable = 'On';
 BpodSystem.Data.Custom.SessionMeta.AOModule = true;
+BpodSystem.Data.Custom.SessionMeta.PlayerType = "Analog";
 end % SetupWavePlayer
