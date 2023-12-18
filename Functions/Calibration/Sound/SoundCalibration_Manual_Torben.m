@@ -34,24 +34,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 % A sample-wise attentuation envelope for pure frequency sweep waveforms can be calculated
 % with toneAtt = polyval(SoundCal(1,s).Coefficient,freqvec) where freqvec contains the instantaneous frequency at each sample.
 
-function [SoundCal, H] = SoundCalibration_Manual_Modified(FreqRange, nMeasurements, dbSPL_Target, nSpeakers)
+function [SoundCal] = SoundCalibration_Manual_Torben(HiFiPlayer, FreqRange, nMeasurements, dbSPL_Target, Speakers)
 
-global BpodSystem
-global H
-%% Resolve HiFi Module USB port
-if (isfield(BpodSystem.ModuleUSB, 'HiFi1'))
-    %% Create an instance of the HiFi module
-    H = BpodHiFi(BpodSystem.ModuleUSB.HiFi1);
-else
-    error('Error: To run this protocol, you must first pair the HiFi module with its USB port. Click the USB config button on the Bpod console.')
-end
 % Params
-H.DigitalAttenuation_dB = -10; % Set to the same as DetectionConfidence
-H.SamplingRate = 192000;
-H.AMenvelope = 1/192:1/192:1;
+% HiFiPlayer.DigitalAttenuation_dB = -10; % Set to the same as DetectionConfidence
+% HiFiPlayer.SamplingRate = 192000; 
+HiFiPlayer.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
 nTriesPerFrequency = 7;
-toneDuration = 5; % Seconds
+toneDuration = 3; % Seconds
 AcceptableDifference_dBSPL = 0.5;
 
 if (length(FreqRange) ~= 2) || (sum(FreqRange < 20) > 0) || (sum(FreqRange > 100000) > 0)
@@ -62,7 +53,7 @@ end
 if (dbSPL_Target < 10) || (dbSPL_Target > 120)
     error('Error: target dB SPL must be in range [10, 120]')
 end
-if nSpeakers > 2
+if length(Speakers) > 2
     error('Error: this function can calibrate 1 or 2 speakers.')
 end
 if FreqRangeError
@@ -71,7 +62,7 @@ end
 
 % Setup struct
 SoundCal = struct;
-for i = 1:nSpeakers
+for i = 1:2
     SoundCal(i).Table = [];
     SoundCal(i).CalibrationTargetRange = FreqRange;
     SoundCal(i).TargetSPL = dbSPL_Target;
@@ -84,11 +75,11 @@ MaxFreq = FreqRange(2);
 %FrequencyVector =  logspace(log10(MinFreq),log10(MaxFreq),nMeasurements);
 FrequencyVector = linspace(MinFreq,MaxFreq,nMeasurements);
 SpeakerNames = {'Left', 'Right'};
-for s = 1:nSpeakers
+for s = Speakers
     ThisTable = zeros(nMeasurements, 2);
     disp([char(10) 'Begin calibrating ' SpeakerNames{s} ' speaker.'])
     for m = 1:nMeasurements
-        attFactor = 0.0075;
+        attFactor = 0.01;
         found = 0;
         nTries = 0;
         while found == 0
@@ -99,12 +90,12 @@ for s = 1:nSpeakers
             input(['Press Enter to play the next tone. This tone = ' num2str(FrequencyVector(m)) ' Hz, ' num2str(attFactor) ' FS amplitude.'], 's'); 
             Wave = GenerateSineWave(192000, FrequencyVector(m), toneDuration)*attFactor;
             if s == 1
-                H.load(1, [Wave; zeros(1,length(Wave))]); H.push; pause(.1);
+                HiFiPlayer.load(2, [Wave; Wave]); HiFiPlayer.push; pause(.1);
             else
-                H.load(1, [zeros(1,length(Wave)); Wave]); H.push; pause(.1);
+                HiFiPlayer.load(2, [Wave; Wave]); HiFiPlayer.push; pause(.1);
             end
             
-            H.play(1);
+            HiFiPlayer.play(2);
             pause(toneDuration);
             dbSPL_Measured = input(['Enter dB SPL measured > ']);
             if abs(dbSPL_Measured - dbSPL_Target) <= AcceptableDifference_dBSPL
@@ -132,4 +123,5 @@ for s = 1:nSpeakers
     end
     SoundCal(s).Table = ThisTable;
     SoundCal(s).Coefficient = polyfit(ThisTable(:,1)',ThisTable(:,2)',1);
+
 end
