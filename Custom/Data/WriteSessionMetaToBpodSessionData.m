@@ -46,7 +46,7 @@ try
                             'Reported by (full name)?'};
     
     BoxTitle = 'Behavioural';
-    Dims = [1 50; 1 50; 1 20; 1:20; 1:50];
+    Dims = [1 50; 1 50; 1 20; 1 20; 1 50];
     DefaultInput = {'t', '', '-1', '', 'Torben Ott'};
     opts.Interpreter = 'tex';
     
