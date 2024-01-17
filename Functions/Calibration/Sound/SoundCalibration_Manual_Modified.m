@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function [SoundCal, H] = SoundCalibration_Manual_Modified(FreqRange, nMeasurements, dbSPL_Target, nSpeakers)
 
 global BpodSystem
-global H
+%global H
 %% Resolve HiFi Module USB port
 if (isfield(BpodSystem.ModuleUSB, 'HiFi1'))
     %% Create an instance of the HiFi module
@@ -46,12 +46,12 @@ else
     error('Error: To run this protocol, you must first pair the HiFi module with its USB port. Click the USB config button on the Bpod console.')
 end
 % Params
-H.DigitalAttenuation_dB = -10; % Set to the same as DetectionConfidence
 H.SamplingRate = 192000;
+H.DigitalAttenuation_dB = -35; % Set to the same as DetectionConfidence
 H.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
 nTriesPerFrequency = 7;
-toneDuration = 5; % Seconds
+toneDuration = 3; % Seconds
 AcceptableDifference_dBSPL = 0.5;
 
 if (length(FreqRange) ~= 2) || (sum(FreqRange < 20) > 0) || (sum(FreqRange > 100000) > 0)
@@ -88,7 +88,7 @@ for s = 1:nSpeakers
     ThisTable = zeros(nMeasurements, 2);
     disp([char(10) 'Begin calibrating ' SpeakerNames{s} ' speaker.'])
     for m = 1:nMeasurements
-        attFactor = 0.01;
+        attFactor = 0.1;
         found = 0;
         nTries = 0;
         while found == 0
