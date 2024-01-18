@@ -50,7 +50,7 @@ H.SamplingRate = 192000;
 H.DigitalAttenuation_dB = -35; % Set to the same as DetectionConfidence
 H.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
-nTriesPerFrequency = 7;
+nTriesPerFrequency = 100;
 toneDuration = 3; % Seconds
 AcceptableDifference_dBSPL = 0.5;
 
