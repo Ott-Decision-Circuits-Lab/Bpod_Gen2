@@ -66,7 +66,11 @@ try
     reward_string = strcat(num2str(reward_total), "uL");
     hubby_info.water_scheduling = string(reward_string);
     
-    hubby_info.weight = str2num(BpodSystem.Data.Custom.SessionMeta.Weight);
+    try
+        hubby_info.weight = str2num(BpodSystem.Data.Custom.SessionMeta.Weight); % non-essential
+    catch
+    end
+    
     hubby_info.reported_by = string(BpodSystem.Data.Custom.SessionMeta.ReportBy);
     
     hubby_info_table = struct2table(hubby_info);
