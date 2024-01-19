@@ -56,6 +56,9 @@ try
         ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     end
     
+    if ~isempty(TaskParameters) && isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
+        ExperimentalTreatment = strcat(ExperimentalTreatment, " & photometry");
+    end
 
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
