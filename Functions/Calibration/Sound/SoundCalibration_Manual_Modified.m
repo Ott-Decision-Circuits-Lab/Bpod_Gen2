@@ -47,7 +47,7 @@ else
 end
 % Params
 H.SamplingRate = 192000;
-H.DigitalAttenuation_dB = -35; % Set to the same as DetectionConfidence
+H.DigitalAttenuation_dB = -45; % Set to the same as DetectionConfidence
 H.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
 nTriesPerFrequency = 100;
@@ -88,7 +88,7 @@ for s = 1:nSpeakers
     ThisTable = zeros(nMeasurements, 2);
     disp([char(10) 'Begin calibrating ' SpeakerNames{s} ' speaker.'])
     for m = 1:nMeasurements
-        attFactor = 0.1;
+        attFactor = 0.05;
         found = 0;
         nTries = 0;
         while found == 0
@@ -133,3 +133,22 @@ for s = 1:nSpeakers
     SoundCal(s).Table = ThisTable;
     SoundCal(s).Coefficient = polyfit(ThisTable(:,1)',ThisTable(:,2)',1);
 end
+
+figure
+plot(SoundCal(1).Table(:,1), SoundCal(1).Table(:,2), 'o')
+hold on
+line = polyval(SoundCal(1).Coefficient ,1:20000);
+plot(line);
+xlabel("Hz")
+ylabel("Attenuation factor")
+a = gca;
+a.XAxis.Exponent = 0;
+a.YAxis.Exponent = 0;
+x = SoundCal(1).Table(:,1);
+v = SoundCal(1).Table(:,2);
+%xq = linspace(SignalMinFreq,SignalMaxFreq,SamplingRate*SignalDuration);
+xq = linspace(1000,20000,192000*0.1);
+vq = interp1(x,v,xq);
+plot(xq, vq);
+legend("Actual", "Fitted", "Interpolated");
+axis([0 20000 0 1])
