@@ -34,10 +34,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 % A sample-wise attentuation envelope for pure frequency sweep waveforms can be calculated
 % with toneAtt = polyval(SoundCal(1,s).Coefficient,freqvec) where freqvec contains the instantaneous frequency at each sample.
 
-function [SoundCal, H] = SoundCalibration_Manual_Modified(FreqRange, nMeasurements, dbSPL_Target, nSpeakers)
+function [SoundCal] = SoundCalibration_Manual_Modified(FreqRange, nMeasurements, dbSPL_Target, nSpeakers)
 
 global BpodSystem
-%global H
 %% Resolve HiFi Module USB port
 if (isfield(BpodSystem.ModuleUSB, 'HiFi1'))
     %% Create an instance of the HiFi module
@@ -52,7 +51,7 @@ H.AMenvelope = 1/192:1/192:1;
 FreqRangeError = 0;
 nTriesPerFrequency = 100;
 toneDuration = 3; % Seconds
-AcceptableDifference_dBSPL = 0.5;
+AcceptableDifference_dBSPL = 0.3;
 
 if (length(FreqRange) ~= 2) || (sum(FreqRange < 20) > 0) || (sum(FreqRange > 100000) > 0)
     FreqRangeError = 1;
@@ -132,23 +131,24 @@ for s = 1:nSpeakers
     end
     SoundCal(s).Table = ThisTable;
     SoundCal(s).Coefficient = polyfit(ThisTable(:,1)',ThisTable(:,2)',1);
-end
 
-figure
-plot(SoundCal(1).Table(:,1), SoundCal(1).Table(:,2), 'o')
-hold on
-line = polyval(SoundCal(1).Coefficient ,1:20000);
-plot(line);
-xlabel("Hz")
-ylabel("Attenuation factor")
-a = gca;
-a.XAxis.Exponent = 0;
-a.YAxis.Exponent = 0;
-x = SoundCal(1).Table(:,1);
-v = SoundCal(1).Table(:,2);
-%xq = linspace(SignalMinFreq,SignalMaxFreq,SamplingRate*SignalDuration);
-xq = linspace(1000,20000,192000*0.1);
-vq = interp1(x,v,xq);
-plot(xq, vq);
-legend("Actual", "Fitted", "Interpolated");
-axis([0 20000 0 1])
+    figure
+    plot(SoundCal(s).Table(:,1), SoundCal(s).Table(:,2), 'o')
+    hold on
+    line = polyval(SoundCal(s).Coefficient, MinFreq:MaxFreq);
+    plot(line);
+    xlabel("Hz")
+    ylabel("Attenuation factor")
+    a = gca;
+    a.XAxis.Exponent = 0;
+    a.YAxis.Exponent = 0;
+    x = SoundCal(s).Table(:,1);
+    v = SoundCal(s).Table(:,2);
+    %xq = linspace(SignalMinFreq,SignalMaxFreq,SamplingRate*SignalDuration);
+    xq = linspace(MinFreq, MaxFreq, 192000*0.1);
+    vq = interp1(x,v,xq);
+    plot(xq, vq);
+    legend("Actual", "Fitted", "Interpolated");
+    axis([0 20000 0 1])
+    title(strcat(string(datetime("today")), " ", SpeakerNames{s}, " speaker, dig att = ", string(H.DigitalAttenuation_dB)))
+end
