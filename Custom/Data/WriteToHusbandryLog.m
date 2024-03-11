@@ -56,6 +56,9 @@ try
         ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     end
     
+    if ~isempty(TaskParameters) && isfield(TaskParameters.GUI, 'Photometry') && TaskParameters.GUI.Photometry
+        ExperimentalTreatment = strcat(ExperimentalTreatment, " & photometry");
+    end
 
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
@@ -65,6 +68,13 @@ try
     reward_total = CalculateCumulativeReward();
     reward_string = strcat(num2str(reward_total), "uL");
     hubby_info.water_scheduling = string(reward_string);
+    
+    hubby_info.weight = str2num(BpodSystem.Data.Custom.SessionMeta.Weight); % non-essential
+    if isempty(hubby_info.weight)
+        hubby_info.weight = nan;
+    end
+    
+    hubby_info.reported_by = string(BpodSystem.Data.Custom.SessionMeta.ReportBy);
     
     hubby_info_table = struct2table(hubby_info);
 catch
