@@ -64,6 +64,7 @@ try
     end
 
     exp_info.experimenter = string(Info.Experimenter);
+    exp_info.lab = string("AG Torben Ott at Humboldt University Berlin");
     exp_info.session_description = strjoin(Info.SessionDescription, '; ');
     exp_info.rig_computer_id = string(strtrim(Info.Rig));
     exp_info.bpod_version = string(Info.StateMachineVersion);
@@ -79,14 +80,18 @@ try
     session_len = last_trial_end - first_trial_start;
     exp_info.session_length = string(session_len); % (s)
 
+    metadata_path = string(strcat(name, "_session_metadata.tsv"));
+    exp_info.metadata_file_path = metadata_path;
+
+    trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));
+    exp_info.preprocessed_trial_data_file_path = trial_path;
+
     DataFolderPath = OttLabDataServerFolderPath();
     exp_info.raw_data_file_path = strcat(DataFolderPath, num2str(exp_info.rat_id),...
                                   '\bpod_session\', session_datetime);
     
-    trial_path = string(strcat(name, "_trial_custom_data_and_params.tsv"));
-    exp_info.preprocessed_trial_data_file_path = trial_path;
-    metadata_path = string(strcat(name, "_session_metadata.tsv"));
-    exp_info.metadata_file_path = metadata_path;
+    
+    
     exp_info.peripherals_validation = string(BpodSystem.Data.Custom.SessionMeta.BehaviouralValidation) == "true";
     
     if ~isempty(BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks)
