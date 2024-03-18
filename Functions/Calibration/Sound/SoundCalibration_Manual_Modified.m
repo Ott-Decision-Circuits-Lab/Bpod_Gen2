@@ -150,5 +150,12 @@ for s = 1:nSpeakers
     plot(xq, vq);
     legend("Actual", "Fitted", "Interpolated");
     axis([0 20000 0 1])
-    title(strcat(string(datetime("today")), " ", SpeakerNames{s}, " speaker, dig att = ", string(H.DigitalAttenuation_dB)))
+
+    if nSpeakers == 1
+        speakerModeString = "Mono";
+    else
+        speakerModeString = "Stereo";
+    end
+
+    title(strcat(string(datetime("today")), " ", SpeakerNames{s}, " speaker ", speakerModeString, " dig att = ", string(H.DigitalAttenuation_dB)))
 end
