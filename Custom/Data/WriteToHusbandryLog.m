@@ -47,7 +47,9 @@ try
     if isempty(hubby_info.cage_number)
         hubby_info.cage_numer = -1;
     end
+    hubby_info.rat_location = string("ZH191");
     hubby_info.license = "G0011/22";
+    hubby_info.score = "O";
     
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'PharmacologyOn')) == 1 && TaskParameters.GUI.PharmacologyOn
         drug_info = BpodSystem.Data.Custom.Pharmacology;
@@ -64,16 +66,16 @@ try
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
     end
     hubby_info.experimental_treatment = string(ExperimentalTreatment);
-    
+
     reward_total = CalculateCumulativeReward();
     reward_string = strcat(num2str(reward_total), "uL");
     hubby_info.water_scheduling = string(reward_string);
-    
+
     hubby_info.weight = str2num(BpodSystem.Data.Custom.SessionMeta.Weight); % non-essential
     if isempty(hubby_info.weight)
         hubby_info.weight = nan;
     end
-    
+
     hubby_info.reported_by = string(BpodSystem.Data.Custom.SessionMeta.ReportBy);
     
     hubby_info_table = struct2table(hubby_info);
