@@ -51,7 +51,6 @@ for iBpodSession = 1:length(BpodSessions)
                 disp(strcat('Error: fail to transfer processed photometry data folder for R', num2str(RatID), ' at T', SessionDateTime))
             end
             
-            break
         end
     end
 end % end for
