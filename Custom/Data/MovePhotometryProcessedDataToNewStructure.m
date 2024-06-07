@@ -31,12 +31,21 @@ for iBpodSession = 1:length(BpodSessions)
             if ~isfolder(NewProcessedPhotometryDataFoldersPath)
                 mkdir(NewProcessedPhotometryDataFoldersPath);
             end
-
-            load(fullfile(ProcessedPhotometryDataFolderPath, 'PhotometryData.mat')); % Variable Name will be DataObject
+            
+            % Correct path in DataObject
+            ProcessedPhotometryDataFilePath = fullfile(ProcessedPhotometryDataFolderPath, 'PhotometryData.mat');
+            load(ProcessedPhotometryDataFilePath); % Variable Name will be DataObject
             SessionName = DataObject.SessionName;
-
+            
+            NewRawPhotometryDataFoldersPath = fullfile(DataFolder, num2str(RatID), 'photometry', 'raw_data');
+            PhotometryDataFolderPath = fullfile(NewRawPhotometryDataFoldersPath, strcat(SessionName, '_Photometry'));
+            DataObject.PhotometryDataFolderPath = PhotometryDataFolderPath;
+        
             NewProcessedPhotometryDataFolderPath = fullfile(NewProcessedPhotometryDataFoldersPath, strcat(SessionName, '_', SessionDataFileName));
-            Status = movefile(ProcessedPhotometryDataFolderPath, NewProcessedPhotometryDataFolderPath);
+            DataObject.ProcessedPhotometryDataFolderPath = NewProcessedPhotometryDataFolderPath;
+            save(ProcessedPhotometryDataFilePath, 'DataObject');
+
+            Status = movefile(ProcessedPhotometryDataFilePath, NewProcessedPhotometryDataFolderPath);
 
             if ~Status
                 disp(strcat('Error: fail to transfer processed photometry data folder for R', num2str(RatID), ' at T', SessionDateTime))
