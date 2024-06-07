@@ -28,7 +28,7 @@ for iBpodSession = 1:length(BpodSessions)
             RawPhotometryDataFolderPath = fullfile(SessionDataFolderPath, SessionDataFileName);
 
             NewRawPhotometryDataFoldersPath = fullfile(DataFolder, num2str(RatID), 'photometry', 'raw_data');
-            if isfolder(NewRawPhotometryDataFoldersPath)
+            if ~isfolder(NewRawPhotometryDataFoldersPath)
                 mkdir(NewRawPhotometryDataFoldersPath);
             end
 
