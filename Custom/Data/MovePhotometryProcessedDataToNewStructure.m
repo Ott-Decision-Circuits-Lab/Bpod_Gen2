@@ -45,7 +45,7 @@ for iBpodSession = 1:length(BpodSessions)
             DataObject.ProcessedPhotometryDataFolderPath = NewProcessedPhotometryDataFolderPath;
             save(ProcessedPhotometryDataFilePath, 'DataObject');
 
-            Status = movefile(ProcessedPhotometryDataFilePath, NewProcessedPhotometryDataFolderPath);
+            Status = movefile(ProcessedPhotometryDataFolderPath, NewProcessedPhotometryDataFolderPath);
 
             if ~Status
                 disp(strcat('Error: fail to transfer processed photometry data folder for R', num2str(RatID), ' at T', SessionDateTime))
