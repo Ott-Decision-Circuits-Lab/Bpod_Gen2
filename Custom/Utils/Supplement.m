@@ -4,9 +4,9 @@
 
 % Database fields. Enter your data accordingly.
 
-rat_id = [50, 51, 52, 53]; % Must be run for each cage separately
-%rat_id = [32];
-cage_number = 9;
+%rat_id = [50, 51, 52, 53]; % Must be run for each cage separately
+rat_id = [32];
+cage_number = 7;
 water_scheduling = 'supplement'; % String to be added in water_scheduling column
 reported_by = 'Eric Lonergan'; % Caretaker
 license = 'G0011/22';
@@ -32,9 +32,11 @@ for i = 1:length(rat_id)
     start_indices = find(data.water_scheduling == "start");
     end_indices = find(data.water_scheduling == "end");
     
-    % Ensure we have matched start and end events
-    if length(start_indices) ~= length(end_indices)
-        error("Mismatch between 'start' and 'end' events in water_scheduling");
+    % Allow for a mismatch in start and end events
+    if length(start_indices) > length(end_indices)
+        % Add the current date as a provisional end date
+        end_indices = [end_indices; height(data) + 1];
+        data = [data; table(datetime('now'), rat_id(i), {''}, {''}, 'VariableNames', {'timestamp', 'rat_id', 'experimental_treatment', 'water_scheduling'})];
     end
     
     % Create a list of all dates within the water restriction periods
