@@ -53,7 +53,7 @@ try
     
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'PharmacologyOn')) == 1 && TaskParameters.GUI.PharmacologyOn
         drug_info = BpodSystem.Data.Custom.Pharmacology;
-        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName, " ", drug_info(1), " ", drug_info(2));
+        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName, " Pharmacology:", drug_info(1), " ", drug_info(2));
     else
         ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     end
