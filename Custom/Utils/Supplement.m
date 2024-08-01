@@ -4,9 +4,9 @@
 
 % Database fields. Enter your data accordingly.
 
-%rat_id = [50, 51, 52, 53]; % Must be run for each cage separately
-rat_id = [32];
-cage_number = 7;
+rat_id = [50, 51, 52, 53]; % Must be run for each cage separately
+%rat_id = [34];
+cage_number = 9;
 water_scheduling = 'supplement'; % String to be added in water_scheduling column
 reported_by = 'Eric Lonergan'; % Caretaker
 license = 'G0011/22';
@@ -44,6 +44,13 @@ for i = 1:length(rat_id)
     for j = 1:length(start_indices)
         start_date = data.timestamp(start_indices(j));
         end_date = data.timestamp(end_indices(j));
+        curr_date = datetime('now', 'Format', 'yyyy-MM-dd');
+        curr_date = datetime(year(curr_date), month(curr_date), day(curr_date)); % required for comparison between datetimes
+        % Ensure the date range includes today's date if today is the provisional end date
+        if datetime(year(end_date), month(end_date), day(end_date)) == curr_date
+            end_date = end_date + caldays(1);
+        end
+        
         period_dates = start_date:end_date;
         restricted_dates = [restricted_dates, period_dates];
     end
@@ -59,13 +66,13 @@ for i = 1:length(rat_id)
     SupplementTable = [];
     
     % Loop through each date in the restricted_dates
-    for curr_date = restricted_dates
-        curr_date = datetime(curr_date, 'Format', 'yyyy-MM-dd');
-        curr_date = datetime(year(curr_date), month(curr_date), day(curr_date)); % required for comparison between datetimes
+    for restr_date = restricted_dates
+        restr_date = datetime(restr_date, 'Format', 'yyyy-MM-dd');
+        restr_date = datetime(year(restr_date), month(restr_date), day(restr_date)); % required for comparison between datetimes
         dataTableDates = datetime(year(data.timestamp), month(data.timestamp), day(data.timestamp));
         
         % Get all records for the current date
-        day_records = data(dataTableDates == curr_date, :);
+        day_records = data(dataTableDates == restr_date, :);
         
         % If current date has a start or end event, no supplementation is needed, so skip
         if any(strcmp(day_records.water_scheduling, "start")) || any(strcmp(day_records.water_scheduling, "end"))
@@ -81,7 +88,7 @@ for i = 1:length(rat_id)
         end
         
         % Skip if 'supplement' entry already in the database for that particular day
-        if ismember(curr_date, AST.timestamp)
+        if ismember(restr_date, AST.timestamp) || restr_date > curr_date
             continue
         end
         
