@@ -98,7 +98,7 @@ for i = 1:length(rat_id)
             continue
         else
             % Rats have not consumed at least 9000 µL, requires "supplement"
-            date_string = string(curr_date, 'yyyyMMdd');
+            date_string = string(restr_date, 'yyyyMMdd');
             time_of_supplement_string_NoColon = regexprep(time_of_supplement_string, ':', '');
             timestamp = strcat(date_string, '_', time_of_supplement_string_NoColon);
             
