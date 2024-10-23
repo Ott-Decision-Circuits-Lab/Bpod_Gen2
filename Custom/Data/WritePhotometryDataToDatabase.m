@@ -11,7 +11,17 @@ global BpodSystem
 global TaskParameters
 
 try
-    if isempty(TaskParameters) || ~isfield(TaskParameters.GUI, 'Photometry') || ~TaskParameters.GUI.Photometry
+    if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
+        disp('-> Not an experimental session. No need to save Session data to database.')
+        return
+    end
+catch
+    disp('Error: Logic check. No Session data will be saved.')
+    return
+end
+
+try
+    if ~isfield(TaskParameters.GUI, 'Photometry') || ~TaskParameters.GUI.Photometry
         disp('-> Not a photometry experiment. No writing to photometry_experiment.')
         return
     end
@@ -21,17 +31,9 @@ catch
 end
 
 try
-    conn = ConnectToSQL();
-catch
-    disp('Error: Unable to connect to ott_lab database. Photometry data not saved to database!')
-    return
-end
-
-try
     Info = BpodSystem.Data.Info;
 catch
     disp('Error: BpodSystem Info not found. Photometry data not saved to database!')
-    close(conn)
     return
 end
 
@@ -39,7 +41,13 @@ try
     [~, name, ~] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
     disp('Error: CurrentDataFile not found. Photometry data not saved to database!')
-    close(conn)
+    return
+end
+
+try
+    conn = ConnectToSQL();
+catch
+    disp('Error: Unable to connect to ott_lab database. Photometry data not saved to database!')
     return
 end
 

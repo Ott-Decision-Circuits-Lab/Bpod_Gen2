@@ -12,11 +12,15 @@ Date: October 12, 2022
 %}
 
 global BpodSystem
+global TaskParameters
 
 try
-    conn = ConnectToSQL();
+    if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
+        disp('-> Not an experimental session. No need to save Session data to databsae.')
+        return
+    end
 catch
-    warning('Connection to ott_lab database is not successful. Session info not saved to database!')
+    disp('Error: Logic check. No Session data will be saved.')
     return
 end
 
@@ -27,23 +31,28 @@ try
         tablename = "bpod_experiment";
     end
 catch
-    warning('BpodSystem not found. Session info not saved to database!')
+    disp('Warning: BpodSystem not found. Session info not saved to database!')
     return
 end
 
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('BpodSystem Info not found. Session info not saved to database!')
-    close(conn)
+    disp('Warning: BpodSystem Info not found. Session info not saved to database!')
     return
 end
 
 try
     [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
-    warning('CurrentDataFile not found. Session info not saved to database!')
-    close(conn)
+    disp('Warning: CurrentDataFile not found. Session info not saved to database!')
+    return
+end
+
+try
+    conn = ConnectToSQL();
+catch
+    disp('Warning: Connection to ott_lab database is not successful. Session info not saved to database!')
     return
 end
 
@@ -100,7 +109,7 @@ try
     
     exp_info_table = struct2table(exp_info);
 catch
-    warning('Insufficient experiment info for creating table.')
+    disp('Warning: Insufficient experiment info for creating table.')
     close(conn)
     return
 end
@@ -108,10 +117,11 @@ end
 try
     sqlwrite(conn, tablename, exp_info_table)
 catch
-    warning('Unable to write to bpod_experiment table.')
+    disp('Warning: Unable to write to bpod_experiment table.')
     close(conn)
     return
 end
+
 close(conn)
 disp('-> SessionData written to bpod_experiment table in database.')
 end  % Write_SessionDataInfo_to_ExperimentTable()
