@@ -10,5 +10,10 @@ elseif isunix && ~ismac %Linux OS
 elseif isunix && ismac %Mac OS
     ServerPath = '/Volumes/ottlab/data/';
 else
+    ServerPath = '';
     disp('Error: Unknown operating system')
+end
+
+if ~isfolder(ServerPath)
+    warning('Lab server not accessible.  Check your connection.')
 end
