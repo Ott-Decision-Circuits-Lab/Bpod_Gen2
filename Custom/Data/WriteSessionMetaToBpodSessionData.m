@@ -43,11 +43,12 @@ try
                             'Any particular remarks: ',...
                             'Cage number?',...
                             'Weight?',...
+                            'For females, day after last oestrus?'
                             'Reported by (full name)?'};
     
     BoxTitle = 'Behavioural';
-    Dims = [1 50; 1 50; 1 20; 1 20; 1 50];
-    DefaultInput = {'t', '', '-1', '', 'Torben Ott'};
+    Dims = [1 50; 1 50; 1 20; 1 20; 1 50; 1 50];
+    DefaultInput = {'t', '', '-1', '', '', 'Torben Ott'};
     opts.Interpreter = 'tex';
     
     Answer = inputdlg(BehaviouralQuestions, BoxTitle, Dims, DefaultInput, opts);
@@ -64,7 +65,8 @@ try
     BpodSystem.Data.Custom.SessionMeta.BehaviouralRemarks = cell2mat(Answer(2));
     BpodSystem.Data.Custom.SessionMeta.CageNumber = cell2mat(Answer(3));
     BpodSystem.Data.Custom.SessionMeta.Weight = cell2mat(Answer(4));
-    BpodSystem.Data.Custom.SessionMeta.ReportBy = cell2mat(Answer(5));
+    BpodSystem.Data.Custom.SessionMeta.EstrousPhase = cell2mat(Answer(5));
+    BpodSystem.Data.Custom.SessionMeta.ReportBy = cell2mat(Answer(6));
     disp('-> Writing behavioural metadata is successful')
 catch
     disp('Error: Behavioural Metadata. No behavioural SessionMeta will be written.')
