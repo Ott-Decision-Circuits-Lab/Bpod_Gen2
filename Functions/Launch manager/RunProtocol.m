@@ -191,8 +191,8 @@ switch Opstring
         SaveBpodSessionData();
         SaveSessionDataToFileServer();
         SaveSessionFigureToFileServer();
-        SaveAnalysisFigureToFileServer();
         SavePhotometryFiguresToFileServer();
+        SaveAnalysisFigureToFileServer();
         WriteSessionDataInfoToExperimentTable();
         WriteToHusbandryLog();
         WritePhotometryDataToDatabase();

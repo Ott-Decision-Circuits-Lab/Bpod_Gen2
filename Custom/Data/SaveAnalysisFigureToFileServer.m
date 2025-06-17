@@ -4,7 +4,7 @@ global BpodSystem
 
 %% check if there is protocol-specific analysis
 if isfile('Analysis.m') == 0
-    disp('-> No protocol-specific Analysis.m is found. No analysis figure is  saved in the file server.')
+    disp('Warning: No protocol-specific Analysis.m is found. No analysis figure is  saved in the file server.')
     return
 end
 
@@ -12,14 +12,14 @@ end
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('No data info found. Analysis figure not saved to server!');
+    disp('Warning: No data info found. Analysis figure not saved to server!');
     return
 end
 
 try
     [~, FigureName, ~] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
-    warning('No data file found. Analysis figure not saved to server!');
+    disp('Warning: No data file found. Analysis figure not saved to server!');
     return
 end
 
@@ -27,7 +27,7 @@ end
 try
     FigAnalysis = Analysis();
 catch
-    warning('No analysis figure is made. Analysis figure not saved to server!');
+    disp('Warning: No analysis figure is made. Analysis figure not saved to server!');
     return
 end
 
@@ -36,12 +36,12 @@ DataFolderPath = OttLabDataServerFolderPath();
 try
     FigureFolder = strcat(DataFolderPath, Info.Subject, '\bpod_graph\');
 catch
-    warning('Not enough data info for path definition. Analysis figure not saved to server!');
+    disp('Warning: Not enough data info for path definition. Analysis figure not saved to server!');
     return
 end
 
 if ~isfolder(FigureFolder)
-    disp('bpod_graph is not a directory. A folder is created.')
+    disp('-> bpod_graph is not a directory. A folder is created.')
     mkdir(FigureFolder);
 end
 
@@ -50,7 +50,7 @@ try
     saveas(FigAnalysis, FigurePathAnalysis, 'png');
     disp('-> Analysis figure is  successfully saved in the bpod_graph folder in the file server.')
 catch
-    warning('Analysis figure not saved to bpod_graph folder!');
+    disp('Warning: Analysis figure not saved to bpod_graph folder!');
 end
 
 %% check or else create folders for saving in bpod_session
@@ -58,12 +58,12 @@ TimestampStr = FigureName(end-14:end);
 try
     SessionFolder = strcat(DataFolderPath, Info.Subject, '\bpod_session\', TimestampStr);
 catch
-    warning('Not enough data info for path definition. Analysis figure not saved to server!');
+    disp('Warning: Not enough data info for path definition. Analysis figure not saved to server!');
     return
 end
 
 if ~isfolder(SessionFolder)
-    disp('Session folder is not a directory. A folder is created.')
+    disp('-> Session folder is not a directory. A folder is created.')
     mkdir(SessionFolder);
 end
 
@@ -72,7 +72,7 @@ try
     saveas(FigAnalysis, FigurePath, 'png');
     disp('-> Analysis figure is  successfully saved in the bpod_session folder in the file server.')
 catch
-    warning('Analysis figure not saved to bpod_session folder!');
+    disp('Warning: Analysis figure not saved to bpod_session folder!');
 end
 
 close(FigAnalysis);

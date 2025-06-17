@@ -5,12 +5,23 @@ function SaveSessionDataToFileServer()
 % On 2022-10-05
 
 global BpodSystem
+global TaskParameters
+
+try
+    if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
+        disp('-> Not an experimental session. No need to save Session data to server.')
+        return
+    end
+catch
+    disp('Error: Logic check. No Session data will be saved.')
+    return
+end
 
 %% look for current data file
 try
     [filepath, name, ext] = fileparts(BpodSystem.Path.CurrentDataFile);
 catch
-    warning('No data file found. Session data not saved to server!');
+    disp('Warning: No data file found. Session data not saved to server!');
     return
 end
 
@@ -18,7 +29,7 @@ end
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('No data info found. Analysis figure not saved to server!');
+    disp('Warning: No data info found. Session data not saved to server!');
     return
 end
 
@@ -27,7 +38,7 @@ DataFolderPath = OttLabDataServerFolderPath();
 try
     SessionFolder = strcat(DataFolderPath, Info.Subject, '\bpod_session\', TimestampStr);
 catch
-    warning('Not enough data info for path definition. Analysis figure not saved to server!');
+    disp('Warning: Not enough data info for path definition. Session data not saved to server!');
     return
 end
 

@@ -11,9 +11,12 @@ global BpodSystem
 global TaskParameters
 
 try
-    conn = ConnectToSQL();
+    if isempty(BpodSystem) || ~isfield(BpodSystem.Data, 'Custom') || BpodSystem.EmulatorMode || isempty(TaskParameters)
+        disp('-> Not an experimental session. No need to save Session data to database .')
+        return
+    end
 catch
-    warning('Connection to ott_lab database is not sucessful. Husbandry data not saved to database!')
+    disp('Error: Logic check. No Session data will be saved.')
     return
 end
 
@@ -26,8 +29,14 @@ end
 try
     Info = BpodSystem.Data.Info;
 catch
-    warning('BpodSystem Info not found. Husbandry data not saved to database!')
-    close(conn)
+    disp('Warning: BpodSystem Info not found. Husbandry data not saved to database!')
+    return
+end
+
+try
+    conn = ConnectToSQL();
+catch
+    disp('Warning: Connection to ott_lab database is not sucessful. Husbandry data not saved to database!')
     return
 end
 
@@ -53,7 +62,7 @@ try
     
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'PharmacologyOn')) == 1 && TaskParameters.GUI.PharmacologyOn
         drug_info = BpodSystem.Data.Custom.Pharmacology;
-        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName, " Pharmacology:", drug_info(1), " ", drug_info(2));
+        ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName, " Pharmacology:", drug_info(1), " ", drug_info(2), " ", drug_info(3));
     else
         ExperimentalTreatment = strcat("Bpod experiment:", BpodSystem.GUIData.ProtocolName);
     end
@@ -85,7 +94,7 @@ try
     
     hubby_info_table = struct2table(hubby_info);
 catch
-    warning('Insufficient experiment info for creating table.')
+    disp('Warning: Insufficient experiment info for creating table.')
     close(conn)
     return
 end
@@ -93,7 +102,7 @@ end
 try
     sqlwrite(conn, tablename, hubby_info_table)
 catch
-    warning('Unsuccessful writing to husbandry_log.')
+    disp('Warning: Unsuccessful writing to husbandry_log.')
     close(conn)
     return
 end

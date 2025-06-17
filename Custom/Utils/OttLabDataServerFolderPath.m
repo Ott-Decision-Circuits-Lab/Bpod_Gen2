@@ -4,11 +4,16 @@
 
 function ServerPath = OttLabDataServerFolderPath()
 if ispc %Windows OS
-    ServerPath = '\\ottlabfs.bccn-berlin.pri\ottlab\data\';
+    ServerPath = '\\ottfs\ott\data\';
 elseif isunix && ~ismac %Linux OS
-    ServerPath = '/media/ottlab/data/';
+    ServerPath = '/media/ott/data/';
 elseif isunix && ismac %Mac OS
-    ServerPath = '/Volumes/ottlab/data/';
+    ServerPath = '/Volumes/ott/data/';
 else
+    ServerPath = '';
     disp('Error: Unknown operating system')
+end
+
+if ~isfolder(ServerPath)
+    warning('Lab server not accessible.  Check your connection.')
 end
