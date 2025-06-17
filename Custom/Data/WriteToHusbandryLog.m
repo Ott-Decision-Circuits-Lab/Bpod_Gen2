@@ -65,6 +65,11 @@ try
     if sum(strcmp(fieldnames(TaskParameters.GUI), 'EphysSession')) == 1 && TaskParameters.GUI.EphysSession
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
     end
+
+    if TaskParameters.GUI.LaserTrials == 1
+        ExperimentalTreatment = strcat(ExperimentalTreatment, " & optogenetic laser experiment");
+    end
+
     hubby_info.experimental_treatment = string(ExperimentalTreatment);
 
     reward_total = CalculateCumulativeReward();
