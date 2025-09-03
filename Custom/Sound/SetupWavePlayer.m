@@ -51,6 +51,10 @@ BpodSystem.assertModule('WavePlayer', 1); % The second argument (1) indicates th
 Player = BpodWavePlayer(BpodSystem.ModuleUSB.WavePlayer1);
 Player.Port  % Prints the port to the Command Window
 
+% set Player to default
+Player.LoopDuration(:) = 0; % in case some protocols set any to 'On', it will crash when assign fs
+Player.LoopMode(:) = {'Off'};
+
 Player.SamplingRate = fs;
 Player.BpodEvents(:) = {'Off'};
 Player.BpodEvents(1:ChannelNumber) = {'On'}; % regardless of channel size, first two turn on
