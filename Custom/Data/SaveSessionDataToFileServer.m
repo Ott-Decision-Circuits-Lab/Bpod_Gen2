@@ -44,7 +44,12 @@ end
 
 if ~isfolder(SessionFolder)
     disp('bpod_session is not a directory. A folder is created.')
-    mkdir(SessionFolder);
+    try
+        mkdir(SessionFolder);
+    catch
+        disp('Warning: Cannot access path. Session data not saved to server!');
+        return
+    end
 end
 
 %% copy file
