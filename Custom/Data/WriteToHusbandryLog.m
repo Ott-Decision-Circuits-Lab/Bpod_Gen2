@@ -75,7 +75,7 @@ try
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & ephys measurement");
     end
 
-    if TaskParameters.GUI.LaserTrials == 1
+    if ~isempty(TaskParameters) && isfield(TaskParameters.GUI, 'LaserTrials') && TaskParameters.GUI.LaserTrials == 1
         ExperimentalTreatment = strcat(ExperimentalTreatment, " & optogenetic laser experiment");
     end
 
