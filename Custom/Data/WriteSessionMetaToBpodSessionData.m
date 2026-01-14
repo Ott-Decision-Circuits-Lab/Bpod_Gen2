@@ -180,4 +180,52 @@ if isfield(TaskParameters.GUI, 'PharmacologyOn') && TaskParameters.GUI.Pharmacol
     
     disp('-> Writing pharmacology metadata is successful')
 end
+
+%% Opto-related meta
+try
+    if isfield(TaskParameters.GUI, 'LaserTrials') && TaskParameters.GUI.LaserTrials
+        OptoQuestions = {'All\bf opto\rm setups functional (t/f)? ',...
+                         'Any particular remarks: ',...
+                         'Light source connected by AOM Ch3:',...
+                         'Wave length of Ch3 light (nm):',...
+                         'Power of Ch3 light when continuously on (mW):',...
+                         'Stimulated brain area(s) by Ch3: ',...
+                         'Light source connected by AOM Ch4:',...
+                         'Wave length of Ch4 light (nm):',...
+                         'Power of Ch4 light when continuously on (mW):',...
+                         'Stimulated brain area(s) by Ch4: '};
+        
+        BoxTitle = 'Optogenetics';
+        Dims = [1 50; 1 50; 1 50; 1 50];
+        DefaultInput = {'t', '', 'Laser', '465', '10', 'Laser', '635', '10', '', ''};
+        opts.Interpreter = 'tex';
+    
+        Answer = inputdlg(OptoQuestions, BoxTitle, Dims, DefaultInput, opts);
+        
+        if isempty(Answer)
+            Answer = DefaultInput;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.OptoValidation = false;
+        if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
+            BpodSystem.Data.Custom.SessionMeta.EphysValidation = true;
+        end
+        
+        BpodSystem.Data.Custom.SessionMeta.OptoRemarks = cell2mat(Answer(2));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh3LightSource = cell2mat(Answer(3));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh3WaveLength = cell2mat(Answer(4));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh3Power = cell2mat(Answer(5));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh3BrainAreas = cell2mat(Answer(6));
+
+        BpodSystem.Data.Custom.SessionMeta.OptoCh4LightSource = cell2mat(Answer(7));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh4WaveLength = cell2mat(Answer(8));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh4Power = cell2mat(Answer(9));
+        BpodSystem.Data.Custom.SessionMeta.OptoCh4BrainAreas = cell2mat(Answer(10));
+    
+        disp('-> Writing optogenetic metadata is successful')
+    end
+catch
+    disp('Error: Opto Metadata. No Opto SessionMeta will be written.')
+end
+
 end % end function

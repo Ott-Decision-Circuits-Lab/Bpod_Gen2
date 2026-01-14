@@ -76,7 +76,7 @@ try
     end
 
     if ~isempty(TaskParameters) && isfield(TaskParameters.GUI, 'LaserTrials') && TaskParameters.GUI.LaserTrials == 1
-        ExperimentalTreatment = strcat(ExperimentalTreatment, " & optogenetic laser experiment");
+        ExperimentalTreatment = strcat(ExperimentalTreatment, " & optogenetics");
     end
 
     hubby_info.experimental_treatment = string(ExperimentalTreatment);
