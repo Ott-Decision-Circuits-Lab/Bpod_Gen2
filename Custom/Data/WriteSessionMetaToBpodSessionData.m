@@ -197,7 +197,7 @@ try
         
         BoxTitle = 'Optogenetics';
         Dims = [1 50; 1 50; 1 50; 1 50];
-        DefaultInput = {'t', '', 'Laser', '465', '10', 'Laser', '635', '10', '', ''};
+        DefaultInput = {'t', '', 'Laser', '465', '10', 'Diode laser', '635', '10', '', ''};
         opts.Interpreter = 'tex';
     
         Answer = inputdlg(OptoQuestions, BoxTitle, Dims, DefaultInput, opts);
@@ -208,7 +208,7 @@ try
         
         BpodSystem.Data.Custom.SessionMeta.OptoValidation = false;
         if ismember(cell2mat(Answer(1)), ['t', 'T', 'true', 'True', '1'])
-            BpodSystem.Data.Custom.SessionMeta.EphysValidation = true;
+            BpodSystem.Data.Custom.SessionMeta.OptoValidation = true;
         end
         
         BpodSystem.Data.Custom.SessionMeta.OptoRemarks = cell2mat(Answer(2));
