@@ -31,8 +31,9 @@ while ClickTime(N) <= SamplingRate*Duration - ClickLength +1
     ClickTime(N) = ClickTime(N-1) + next_t_in;
 end
 ClickTime = ClickTime(1:N-1); % Remove unallocate slots and the last one larger than duration
+ClickTime = round(ClickTime);
 
-ClickTrain = zeros(1, SamplingRate*Duration);
+ClickTrain = zeros(1, round(SamplingRate*Duration));
 for i = 1:ClickLength
     ClickTrain(ClickTime + i-1) = 1;
 end
